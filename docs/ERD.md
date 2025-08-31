@@ -1,11 +1,12 @@
 ```mermaid
 erDiagram
-    Buyer {
+    User {
         id ObjectId
         name string
         email string
         password string
         gender string
+        role string
         address string
     }
 
@@ -49,7 +50,7 @@ erDiagram
         images array
     }
 
-    Buyer ||--o{ Cart : has
+    User ||--o{ Cart : has
     Cart ||--o{ Product : contains
     Cart ||--o{ Order : generates
     Product }o--|| Category : belongs_to
