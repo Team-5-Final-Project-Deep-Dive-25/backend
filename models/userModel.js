@@ -2,8 +2,9 @@ import mongoose from "mongoose";
 import validator from "validator";
 import userRoles from "../utilities/userRoles.js";
 import userGender from "../utilities/userGender.js";
+
 const userSchema = new mongoose.Schema({
-  name: {
+  name : {
     type: String,
     required: true,
   },
@@ -39,8 +40,10 @@ const userSchema = new mongoose.Schema({
   address: {
     type: String,
     required: true,
+    minlength: 10,
+    maxlength: 40
   },
-});
+ }, {timestamps : true});
 
 export const User = mongoose.model("User", userSchema);
 

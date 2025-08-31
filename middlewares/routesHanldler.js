@@ -1,8 +1,8 @@
-// import { FAIL } from "../utilities/successWords.js";
+import { FAIL } from "../utilities/successWords.js";
 
 export const invaildRouter = (req, res) => {
   return res.status(404).json({
-    success: fail,
+    success: FAIL,
     status: 404,
     msg: "Invalid Route",
   });
@@ -10,9 +10,9 @@ export const invaildRouter = (req, res) => {
 
 
 export const errorDisplay = (err, req, res, next) => {
-  res.status(err.statusCode || 500).json({
+ return res.status(err.statusCode || 500).json({
     status: err.statusCode || 500,
-    success: fail,
+    success: FAIL,
     msg: err.message || "Internal Server Error",
   });
 };

@@ -1,11 +1,7 @@
-//import 
 
-import  User from "../../models/userModel.js";
+import { User} from "../../models/userModel.js";
 import { SUCCESS } from "../../utilities/successWords.js";
-import bycrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import generate_jwt from "../../utilities/generateJWT.js";
 import asyncWrapper from "../../middlewares/asyncWrapper.js";
 dotenv.config();
 export const getAllUsers = asyncWrapper(async (req, res) => {
@@ -20,3 +16,4 @@ export const getAllUsers = asyncWrapper(async (req, res) => {
   res.json({ status: SUCCESS, data: { users: data } });
 
 });
+
