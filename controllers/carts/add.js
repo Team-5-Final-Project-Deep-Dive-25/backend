@@ -1,13 +1,14 @@
 import Cart from "../../models/cartModel.js";
 
 const addCartItem = async (req, res) => {
+  
   try {
     const { productID, buyerID, quantity } = req.body;
 
     if (!productID || !buyerID) {
       return res.status(400).json({ message: "productID and buyerID are required" });
     }
-
+    
     let cartItem = await Cart.findOne({ productID, buyerID });
 
     if (cartItem) {
