@@ -9,4 +9,5 @@ class ErrorHandler extends Error {
     return this;
   }
 }
-export const errorHandler = new ErrorHandler();
+
+export { ErrorHandler };

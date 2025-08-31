@@ -1,7 +1,6 @@
-import express from "express";
-// import productrouest from "../controllers/productController.js";
-const router = express.Router();
+import express from "express"
+import userRouter from "./userRouter.js"
 
-// app.use("/products", productrouest);
-
-export default router;
+const Router = express.Router();
+Router.use("/users", userRouter);
+export default Router;
