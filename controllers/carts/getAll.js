@@ -1,15 +1,20 @@
 import Cart from "../../models/cartModel.js";
 
 const getAllCartItems = async (req, res) => {
-  try {
-    const { buyerID } = req.query;
-    const filter = buyerID ? { buyerID } : {};
-    const cartItems = await Cart.find(filter).populate("productID");
+  const { buyerID } = req.user._id;
+  const filter = buyerID ? { buyerID } : {};
+  const cartItems = await Cart.find(filter, {
+    __v: 0,
+    createdAt: 0,
+    updatedAt: 0,
+  }).populate("productID");
 
-    res.json(cartItems);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+  res.json({
+    status: 200,
+    success: "success",
+    message: "Cart items fetched successfully",
+    data: cartItems,
+  });
 };
 
 export default getAllCartItems;

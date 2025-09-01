@@ -9,6 +9,8 @@ import getOne from "../controllers/discount/getOne.js";
 import updateOne from "../controllers/discount/update.js";
 import deleteOne from "../controllers/discount/delete.js";
 import asyncWrapper from "../middlewares/asyncWrapper.js";
+import { protect } from "../middlewares/auth.js";
+
 const router = express.Router();
 
 router.get("/", asyncWrapper(getAllDiscounts));
