@@ -5,7 +5,7 @@ import discountroute from "./discountRouter.js";
 import userRouter from "./userRouter.js";
 const router = express.Router();
 
-router.use("/cart", cartRouter);
+router.use("/carts", cartRouter);
 // app.use("/products", productrouest);
 router.use("/discounts", discountroute);
 router.use("/users", userRouter);
