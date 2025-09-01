@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const register = async (req, res) => {
-  const { name, email, password, gender, address,role } = req.body;
+  const { name, email, password, gender, address } = req.body;
          
   const olduser = await User.findOne({ email: req.body.email.toLowerCase() });
   if (olduser) {

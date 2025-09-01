@@ -59,6 +59,7 @@ export const registerValidation = (mode = "create") => [
     ? check("gender")
         .exists()
         .withMessage("gender is required")
+        .toUpperCase()
         .isIn([userGender.MALE, userGender.FEMALE])
         .withMessage("gender must be either male or female")
         : check("gender")
@@ -83,12 +84,13 @@ export const registerValidation = (mode = "create") => [
   mode === "create"
     ? check("role")
         .optional()
+        .toUpperCase()
         .isIn([userRoles.USER,userRoles.ADMIN]) 
         .withMessage("role must be either user or admin")
     : check("role")
         .optional()
         .isIn([userRoles.USER, userRoles.ADMIN])
-        .withMessage("role must be either user or admin"),
+        .withMessage("role must be either user or admin")
 ];
 
 

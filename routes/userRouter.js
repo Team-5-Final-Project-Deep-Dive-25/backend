@@ -9,11 +9,9 @@ import asyncWrapper from "../middlewares/asyncWrapper.js";
 import { registerValidation } from "../controllers/validation/register.js";
 import { loginValidation } from "../controllers/validation/login.js";
 import { changeRole } from "../controllers/users/admin/changeRole.js";
+import { getProfile } from "../controllers/users/getProfile.js";
 
-// import {getProfile} from "../controllers/users/getProfile.js"
 const userRouter = express.Router();
-
-// userRouter.get("/profile", protect, getProfile);
 
 userRouter.post(
   "/register",
@@ -35,5 +33,7 @@ userRouter.patch(
   authorizeRoles(userRoles.ADMIN),
   asyncWrapper(changeRole)
 );
+
+userRouter.get("/profile", getProfile);
 
 export default userRouter;

@@ -1,19 +1,18 @@
 import { User } from "../../../models/userModel.js";
 import { SUCCESS, FAIL } from "../../../utilities/successWords.js";
-
+import userRoles from "../../../utilities/userRoles.js";
 export const changeRole = async (req, res) => {
-  const { userId, newRole } = req.body;
-  
-  if (!userId || !newRole) {
+  let { id, newRole } = req.body;
+  newRole = newRole.toUpperCase();  
+  if (!id || !newRole) {
     return res.status(400).json({
       success: FAIL,
       status: 400,
-      message: "userId and newRole are required",
+      message: "id and newRole are required",
     });
   }
 
-   const validRoles = ["user", "admin"];
-  if (!validRoles.includes(newRole)) {
+  if (newRole != userRoles.ADMIN && newRole != userRoles.USER) {
     return res.status(400).json({
       success: FAIL,
       status: 400,
@@ -21,7 +20,7 @@ export const changeRole = async (req, res) => {
     });
   }
 
-  const user = await User.findById(userId);
+  const user = await User.findById(id);
   if (!user) {
     return res.status(404).json({
       success: FAIL,
@@ -29,13 +28,6 @@ export const changeRole = async (req, res) => {
       message: "User not found",
     });
   }
-   
-  
-if(User.role.ADMIN.count>2)
-{
-
- 
-
 
   if (user.role === newRole) {
     return res.status(400).json({
@@ -48,17 +40,9 @@ if(User.role.ADMIN.count>2)
   user.role = newRole;
   await user.save();
 
-  res.status(200).json({
-    success: SUCCESS,
-    status: 200,
-    message: "User role updated successfully",
-    data: user,
-  });
-
   return res.status(200).json({
     success: SUCCESS,
     status: 200,
     message: "User role updated successfully",
   });
-}
 };
