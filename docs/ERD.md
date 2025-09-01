@@ -28,13 +28,16 @@ erDiagram
         id ObjectId
         title string
         description string
+        discountId ObjectId
     }
 
     Discount {
         id ObjectId
         ProductId ObjectId
         CategoryId ObjectId
-        percentage number
+        type string
+        value number 
+        endDate date
     }
 
     Product {
@@ -43,9 +46,8 @@ erDiagram
         description string
         price number
         stock number
-        quantity number
-        category ObjectId
-        discount number
+        categoryId ObjectId
+        discountId number
         rate number
         images array
     }
