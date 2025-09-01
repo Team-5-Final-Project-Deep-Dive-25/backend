@@ -8,12 +8,10 @@ export const invaildRouter = (req, res) => {
   });
 };
 
-
 export const errorDisplay = (err, req, res, next) => {
  return res.status(err.statusCode || 500).json({
-    status: err.statusCode || 500,
-    success: FAIL,
-    message: err.message || "Internal Server Error",
-  });
+   status: err.statusCode || 500,
+   success: FAIL,
+   message: err.message || "Internal Server Error",
+ });
 };
-

@@ -8,22 +8,22 @@ import getAllDiscounts from "../controllers/discount/getAll.js";
 import getOne from "../controllers/discount/getOne.js";
 import updateOne from "../controllers/discount/update.js";
 import deleteOne from "../controllers/discount/delete.js";
-import { asyncWarper } from "../middlewares/asyncWrapper.js";
+import asyncWrapper from "../middlewares/asyncWrapper.js";
 const router = express.Router();
 
-router.get("/", asyncWarper(getAllDiscounts));
-router.get("/:id", asyncWarper(getOne));
+router.get("/", asyncWrapper(getAllDiscounts));
+router.get("/:id", asyncWrapper(getOne));
 router.post(
   "/",
   discountValidation("create"),
   handleDiscountValidation,
-  asyncWarper(add)
+  asyncWrapper(add)
 );
 router.put(
   "/:id",
   discountValidation("update"),
   handleDiscountValidation,
-  asyncWarper(updateOne)
+  asyncWrapper(updateOne)
 );
-router.delete("/:id", asyncWarper(deleteOne));
+router.delete("/:id", asyncWrapper(deleteOne));
 export default router;

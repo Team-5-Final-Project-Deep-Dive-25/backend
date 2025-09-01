@@ -1,13 +1,13 @@
-import { ErrorHandler } from "../utilities/errorHandler.js";
+import { FAIL } from "../utilities/successWords.js";
 
 export const authorizeRoles = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      throw new ErrorHandler(
-        "You are not allowed to access this route",
-        403,
-        "fail"
-      );
+      res.status(403).json({
+        status: 403,
+        success: FAIL,
+        message: "You are not allowed to access this route",
+      });
     }
     next();
   };
