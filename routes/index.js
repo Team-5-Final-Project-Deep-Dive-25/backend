@@ -1,9 +1,12 @@
 import express from "express";
-import productroute from "./productRouter.js";
+import cartRouter from "./cartRouter.js";
+// import productrouest from "../controllers/productController.js";
 import discountroute from "./discountRouter.js";
 import userRouter from "./userRouter.js";
 const router = express.Router();
-router.use("/products", productroute);
+
+router.use("/cart", cartRouter);
+// app.use("/products", productrouest);
 router.use("/discounts", discountroute);
 router.use("/users", userRouter);
 
