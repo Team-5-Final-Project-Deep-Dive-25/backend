@@ -2,7 +2,7 @@ import { Category } from "../../models/categoryModel.js";
 import { FAIL, SUCCESS } from "../../utilities/successWords.js";
 
 const add = async (req, res) => {
-  const { title } = req.body;
+  const { title, description } = req.body;
   const existingCategory = await Category.findOne({ title, deleted_at: null });
   if (existingCategory) {
     return res.status(400).json({

@@ -1,8 +1,17 @@
 import { Category } from "../../models/categoryModel.js";
 import { FAIL, SUCCESS } from "../../utilities/successWords.js";
+import mongoose from "mongoose";
 
 const getOne = async (req, res) => {
   const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      success: false,
+      status: 400,
+      message: "Invalid ObjectId",
+    });
+  }
+
   const category = await Category.findOne(
     { _id: id, deleted_at: null },
     { __v: 0, updatedAt: 0, deleted_at: 0 }
