@@ -6,15 +6,18 @@ export const getAll = async (req, res) => {
   const limit = parseInt(req.query.limit) || 10;
   const skip = (page - 1) * limit;
 
-  const products = await Product.find(
-    { deleted_at: null },
-    {
-      __v: 0,
-      createdAt: 0,
-      updatedAt: 0,
-      deleted_at: 0,
-    }
-  )
+  // Build filter object
+  const filter = { deleted_at: null };
+  if (req.query.category) {
+    filter.categortyId = req.query.category;
+  }
+
+  const products = await Product.find(filter, {
+    __v: 0,
+    createdAt: 0,
+    updatedAt: 0,
+    deleted_at: 0,
+  })
     .populate({
       path: "categortyId",
       select: "-__v -updatedAt -createdAt -deleted_at",
@@ -32,7 +35,7 @@ export const getAll = async (req, res) => {
       message: "No Products found",
     });
   }
-  const total = await Product.countDocuments({ deleted_at: null });
+  const total = await Product.countDocuments(filter);
 
   return res.status(200).json({
     success: SUCCESS,
