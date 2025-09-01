@@ -7,10 +7,13 @@ export const invaildRouter = (req, res) => {
     msg: "Invalid Route",
   });
 };
+
+
 export const errorDisplay = (err, req, res, next) => {
-  res.status(err.statusCode || 500).json({
+ return res.status(err.statusCode || 500).json({
     status: err.statusCode || 500,
     success: FAIL,
     message: err.message || "Internal Server Error",
   });
 };
+
