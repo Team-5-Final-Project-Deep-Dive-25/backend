@@ -1,6 +1,6 @@
 import { check, validationResult } from "express-validator";
 import { Product } from "../../models/productModel.js";
-import { Category } from "../../models/category.js";
+import { Category } from "../../models/categoryModel.js";
 import { FAIL } from "../../utilities/successWords.js";
 
 export const discountValidation = (mode = "create") => [
