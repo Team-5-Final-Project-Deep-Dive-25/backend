@@ -1,7 +1,7 @@
-import { Discount } from "../../models/discount.js";
+import { Discount } from "../../models/discountModel.js";
 import { SUCCESS } from "../../utilities/successWords.js";
 
-const getAllDiscounts = async (req, res) => {
+const getAll = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
@@ -27,7 +27,6 @@ const getAllDiscounts = async (req, res) => {
       pagination: {
         total,
         page,
-        limit,
         pages: Math.ceil(total / limit),
       },
     });
@@ -38,4 +37,4 @@ const getAllDiscounts = async (req, res) => {
   }
 };
 
-export default getAllDiscounts;
+export default getAll;

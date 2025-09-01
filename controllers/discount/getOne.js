@@ -1,8 +1,8 @@
-import { Discount } from "../../models/discount.js";
+import { Discount } from "../../models/discountModel.js";
 import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 
 export const getOne = async (req, res) => {
-  const { id } = req.params;
+  const { id } = parseInt(req.params);
   const discount = await Discount.findOne(
     { _id: id, deleted_at: null },
     { __v: 0, updatedAt: 0, deleted_at: 0 }
