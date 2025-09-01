@@ -1,6 +1,6 @@
 import { body, validationResult } from "express-validator";
 import { FAIL } from "../../utilities/successWords.js";
-import { User } from "../../models/userModel.js";
+
 export const loginValidation = [
   body("email")
     .isEmail()

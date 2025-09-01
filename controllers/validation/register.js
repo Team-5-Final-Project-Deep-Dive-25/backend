@@ -1,6 +1,8 @@
 import { check, validationResult } from "express-validator";
 import { FAIL } from "../../utilities/successWords.js";
 import { User } from "../../models/userModel.js";
+import userGender from "../../utilities/userGender.js";
+import userRoles from "../../utilities/userRoles.js";
 
 export const registerValidation = (mode = "create") => [
   
@@ -57,15 +59,16 @@ export const registerValidation = (mode = "create") => [
     ? check("gender")
         .exists()
         .withMessage("gender is required")
-        .isIn(["male", "female"])
+        .isIn([userGender.MALE, userGender.FEMALE])
         .withMessage("gender must be either male or female")
-    : check("gender")
+        : check("gender")
         .optional()
-        .isIn(["male", "female"])
+        .toUpperCase()
+        .isIn([userGender.MALE, userGender.FEMALE])
         .withMessage("gender must be either male or female"),
+         
 
-
-        mode === "create"
+      mode === "create"
     ? check("address")
         .exists()
         .withMessage("address is required")
@@ -80,24 +83,13 @@ export const registerValidation = (mode = "create") => [
   mode === "create"
     ? check("role")
         .optional()
-        .isIn(["user", "admin"])
+        .isIn([userRoles.USER,userRoles.ADMIN]) 
         .withMessage("role must be either user or admin")
     : check("role")
         .optional()
-        .isIn(["user", "admin"])
+        .isIn([userRoles.USER, userRoles.ADMIN])
         .withMessage("role must be either user or admin"),
 ];
 
 
 
-export const handleRegisterValidation = (req, res, next) => {
-  const result = validationResult(req);
-  if (!result.isEmpty()) {
-    return res.status(400).json({
-      status: 400,
-      success: FAIL,
-      messages: result.array().map((e) => e.msg),
-    });
-  }
-  next();
-};

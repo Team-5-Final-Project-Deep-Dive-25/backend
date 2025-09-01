@@ -1,11 +1,11 @@
-import { User } from "../../models/userModel.js"; 
-import { SUCCESS ,FAIL } from "../../utilities/successWords.js";
+import { User } from "../../../models/userModel.js";
+import { SUCCESS, FAIL } from "../../../utilities/successWords.js";
 
 export const getAllUsers = async (req, res) => {
   const query = req.query;
-  let limit = Number(query.limit) || 6;  
-  const page = Number(query.page) || 1;    
-  if (limit > 50) limit = 50;             
+  let limit = Number(query.limit) || 6;
+  const page = Number(query.page) || 1;
+  if (limit > 50) limit = 50;
   const skip = (page - 1) * limit;
 
   const totalUsers = await User.countDocuments();
@@ -35,4 +35,3 @@ export const getAllUsers = async (req, res) => {
     },
   });
 };
-
