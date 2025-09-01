@@ -6,6 +6,8 @@ import { protect } from "../middlewares/auth.js";
 import { authorizeRoles } from "../middlewares/authrole.js";
 import userRoles from "../utilities/userRoles.js";
 import asyncWrapper from "../middlewares/asyncWrapper.js";
+import { registerValidation, handleRegisterValidation } from "../controllers/validation/register.js";
+import { loginValidation } from "../controllers/validation/login.js";
 
 // import {getProfile} from "../controllers/users/getProfile.js"
 const userRouter = express.Router();
@@ -19,6 +21,7 @@ userRouter.get(
   asyncWrapper(getAllUsers)
 );
 
-userRouter.post("/register", asyncWrapper(register));
-userRouter.post("/login", asyncWrapper(login));
+userRouter.post("/register", registerValidation("create"), handleRegisterValidation, asyncWrapper(register));
+userRouter.post("/login", loginValidation, asyncWrapper(login));
 export default userRouter;
+

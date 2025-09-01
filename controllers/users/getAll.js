@@ -1,25 +1,38 @@
-import { User } from "../../models/userModel.js";
-import { SUCCESS } from "../../utilities/successWords.js";
+import { User } from "../../models/userModel.js"; 
+import { SUCCESS ,FAIL } from "../../utilities/successWords.js";
 
 export const getAllUsers = async (req, res) => {
-  const quary = req.query;
-  const limit = quary.limit || 6;
-  const page = quary.page || 1;
+  const query = req.query;
+  let limit = Number(query.limit) || 6;  
+  const page = Number(query.page) || 1;    
+  if (limit > 50) limit = 50;             
   const skip = (page - 1) * limit;
-  const user = await User.find({}, { __v: false, password: false })
-    .limit(limit)
-    .skip(skip);
-  if (user.length === 0) {
+
+  const totalUsers = await User.countDocuments();
+
+  if (totalUsers === 0) {
     return res.status(404).json({
-      success: "fail",
+      success: FAIL,
       status: 404,
       message: "No users found",
     });
   }
+
+  const users = await User.find({}, { __v: false, password: false })
+    .limit(limit)
+    .skip(skip);
+
   res.status(200).json({
     success: SUCCESS,
     status: 200,
     message: "All users data fetched successfully",
-    data: user,
+    data: users,
+    meta: {
+      totalUsers,
+      totalPages: Math.ceil(totalUsers / limit),
+      currentPage: page,
+      limit,
+    },
   });
 };
+

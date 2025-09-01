@@ -105,6 +105,7 @@ export const discountValidation = (mode = "create") => [
           return true;
         }),
 
+        
   mode === "create"
     ? check("endDate")
         .exists()
