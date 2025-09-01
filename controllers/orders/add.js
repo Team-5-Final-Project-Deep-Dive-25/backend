@@ -8,7 +8,6 @@ const addOrder = async (req, res) => {
     const { status } = req.body;
     const buyerID = req.user.id;
 
-    // جلب الكارت الخاص بالمستخدم مع المنتجات وأسعارها
     const cart = await Cart.findOne({ buyerID }).populate("products.productID");
     if (!cart || !cart.products.length) {
       return res.status(404).json({
@@ -18,7 +17,6 @@ const addOrder = async (req, res) => {
       });
     }
 
-    // حساب التوتال
     let total = 0;
     cart.products.forEach((item) => {
       if (item.productID && item.productID.price) {
@@ -26,7 +24,6 @@ const addOrder = async (req, res) => {
       }
     });
 
-    // إنشاء الأوردر
     const order = await Order.create({
       buyerID,
       cartID: cart._id,

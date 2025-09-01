@@ -9,7 +9,6 @@ const updateOrder = async (req, res) => {
     const { status } = req.body;
     const buyerID = req.user.id;
 
-    // جلب الأوردر
     const order = await Order.findOne({ _id: orderId, buyerID });
     if (!order) {
       return res.status(404).json({
@@ -19,7 +18,6 @@ const updateOrder = async (req, res) => {
       });
     }
 
-    // جلب الكارت المرتبط بالأوردر مع المنتجات وأسعارها
     const cart = await Cart.findById(order.cartID).populate("products.productID");
     if (!cart || !cart.products.length) {
       return res.status(404).json({
@@ -29,7 +27,6 @@ const updateOrder = async (req, res) => {
       });
     }
 
-    // حساب التوتال
     let total = 0;
     cart.products.forEach((item) => {
       if (item.productID && item.productID.price) {
@@ -37,7 +34,6 @@ const updateOrder = async (req, res) => {
       }
     });
 
-    // تحديث حالة الأوردر والتوتال
     order.status = status || order.status;
     order.total = total;
     await order.save();
