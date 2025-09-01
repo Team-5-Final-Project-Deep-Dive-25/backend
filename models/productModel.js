@@ -2,19 +2,25 @@ import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    description: { type: String, required: true },
+    name: {
+      type: String,
+      required: true,
+      minlength: 3,
+      maxlength: 40,
+      unique: true,
+    },
+    description: { type: String, required: true, minlength: 5, maxlength: 150 },
     price: { type: Number, required: true },
     stock: { type: Number, required: true },
-    categorty: {
+    categortyId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
-      default: 0,
+      default: null,
     },
-    discount: {
+    discountId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Discount",
-      default: 0,
+      default: null,
     },
     rate: { type: Number, default: 1, max: 5 },
     images: [{ type: String, required: true }],
