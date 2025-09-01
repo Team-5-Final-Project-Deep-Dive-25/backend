@@ -1,5 +1,5 @@
-import {  SUCCESS } from "../../utilities/successWords.js";
-import { Discount } from "../../models/Discount.js";
+import { SUCCESS } from "../../utilities/successWords.js";
+import { Discount } from "../../models/discount.js";
 
 const add = async (req, res, next) => {
   const { productId, categoryId, type, value, endDate } = req.body;

@@ -1,4 +1,4 @@
-import { Discount } from "../../models/Discount.js";
+import { Discount } from "../../models/discount.js";
 import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 
 const deleteOne = async (req, res) => {
