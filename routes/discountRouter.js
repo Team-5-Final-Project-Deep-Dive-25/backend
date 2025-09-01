@@ -13,8 +13,8 @@ import { protect } from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.get("/", asyncWrapper(getAllDiscounts));
-router.get("/:id", asyncWrapper(getOne));
+router.get("/", protect, asyncWrapper(getAllDiscounts));
+router.get("/:id", protect, asyncWrapper(getOne));
 router.post(
   "/",
   discountValidation("create"),
