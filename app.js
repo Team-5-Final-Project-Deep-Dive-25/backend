@@ -1,10 +1,10 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import cors from "cors";
-import dbConnect from "./config/dbConnection.js";
 import Router from "./routes/index.js";
-import dotenv from "dotenv";
 import { invaildRouter, errorDisplay } from "./middlewares/routesHanldler.js";
-dotenv.config();
+import dbConnect from "./config/dbConnection.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(cors());
