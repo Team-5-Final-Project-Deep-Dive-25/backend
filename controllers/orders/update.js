@@ -1,16 +1,59 @@
+
+import Cart from "../../models/cartModel.js";
 import Order from "../../models/orderModel.js";
+import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 
 const updateOrder = async (req, res) => {
   try {
-    const order = await Order.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const orderId = req.params.id;
+    const { status } = req.body;
+    const buyerID = req.user.id;
 
+    // جلب الأوردر
+    const order = await Order.findOne({ _id: orderId, buyerID });
     if (!order) {
-      return res.status(404).json({ success: false, message: "Order not found" });
+      return res.status(404).json({
+        status: 404,
+        success: FAIL,
+        message: "Order not found",
+      });
     }
 
-    res.status(200).json({ success: true, data: order });
+    // جلب الكارت المرتبط بالأوردر مع المنتجات وأسعارها
+    const cart = await Cart.findById(order.cartID).populate("products.productID");
+    if (!cart || !cart.products.length) {
+      return res.status(404).json({
+        status: 404,
+        success: FAIL,
+        message: "Cart not found or empty",
+      });
+    }
+
+    // حساب التوتال
+    let total = 0;
+    cart.products.forEach((item) => {
+      if (item.productID && item.productID.price) {
+        total += item.productID.price * item.quantity;
+      }
+    });
+
+    // تحديث حالة الأوردر والتوتال
+    order.status = status || order.status;
+    order.total = total;
+    await order.save();
+
+    res.status(200).json({
+      status: 200,
+      success: SUCCESS,
+      message: "Order updated successfully",
+      data: order,
+    });
   } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
+    res.status(500).json({
+      status: 500,
+      success: FAIL,
+      message: error.message,
+    });
   }
 };
 

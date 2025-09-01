@@ -1,8 +1,8 @@
-// validation/addCart.js
+// validation/updateCart.js
 import mongoose from "mongoose";
 
-export function validateAddCart({ productID, quantity }) {
-  if (!productID || !mongoose.Types.ObjectId.isValid(productID)) {
+export function validateUpdateCart({ productID, quantity }) {
+  if (productID && !mongoose.Types.ObjectId.isValid(productID)) {
     return { valid: false, message: "Valid productID is required" };
   }
   if (quantity !== undefined) {
