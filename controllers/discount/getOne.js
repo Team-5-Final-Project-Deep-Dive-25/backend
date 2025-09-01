@@ -1,14 +1,21 @@
 import { Discount } from "../../models/discountModel.js";
 import { SUCCESS, FAIL } from "../../utilities/successWords.js";
-
+import mongoose from "mongoose";
 export const getOne = async (req, res) => {
-  const { id } = parseInt(req.params);
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      success: false,
+      status: 400,
+      message: "Invalid ObjectId",
+    });
+  }
   const discount = await Discount.findOne(
     { _id: id, deleted_at: null },
     { __v: 0, updatedAt: 0, deleted_at: 0 }
   )
-    .populate("productId")
-    .populate("categoryId");
+    .populate("productId", "-__v -updatedAt -createdAt -deleted_at")
+    .populate("categoryId", "-__v -updatedAt -createdAt -deleted_at");
   if (!discount) {
     return res
       .status(404)
