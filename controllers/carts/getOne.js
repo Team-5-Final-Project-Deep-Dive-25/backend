@@ -8,8 +8,9 @@ const getCartItem = async (req, res) => {
     const cartItem = await Cart.findOne(
       {
         buyerID: buyerId,
+        deleted_at: null,
       },
-      { __v: 0, createdAt: 0, updatedAt: 0 }
+      { __v: 0, createdAt: 0, updatedAt: 0, deleted_at: 0 }
     ).populate("products.productID");
 
     if (!cartItem) {

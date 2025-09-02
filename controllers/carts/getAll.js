@@ -4,9 +4,9 @@ import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 
 const getAllCartItems = async (req, res) => {
   try {
-    const carts = await Cart.find()
-      .populate("products.productID") 
-      .populate("buyerID"); 
+    const carts = await Cart.find({ deleted_at: null })
+      .populate("products.productID")
+      .populate("buyerID");
 
     if (!carts || carts.length === 0) {
       return res.status(404).json({

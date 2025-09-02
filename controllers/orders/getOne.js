@@ -2,8 +2,8 @@ import Order from "../../models/orderModel.js";
 
 const getOneOrder = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id)
-      .select("-createdAt -updatedAt -__v")
+    const order = await Order.findOne({ _id: req.params.id, deleted_at: null })
+      .select("-createdAt -updatedAt -__v -deleted_at")
       .populate("customerID", "name email");
 
     if (!order) {

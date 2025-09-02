@@ -7,7 +7,7 @@ const orderSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    cartID:{
+    cartID: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Cart",
       required: true,
@@ -22,6 +22,7 @@ const orderSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
+    deleted_at: { type: Date, default: null },
   },
   { timestamps: true }
 );

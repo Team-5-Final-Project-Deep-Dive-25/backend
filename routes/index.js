@@ -7,8 +7,8 @@ import categoryroute from "./categoryRouter.js";
 import userRouter from "./userRouter.js";
 const router = express.Router();
 
-router.use("/cart", cartRouter);
-router.use("/order", orderRouter);
+router.use("/carts", cartRouter);
+router.use("/orders", orderRouter);
 router.use("/products", productroute);
 
 router.use("/discounts", discountroute);
