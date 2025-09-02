@@ -1,7 +1,6 @@
 import express from "express";
 import cartRouter from "./cartRouter.js";
 import orderRouter from "./orderRouter.js";
-import cartRouter from "./cartRouter.js";
 import discountroute from "./discountRouter.js";
 import productroute from "./productRouter.js";
 import categoryroute from "./categoryRouter.js";
@@ -10,7 +9,7 @@ const router = express.Router();
 
 router.use("/cart", cartRouter);
 router.use("/order", orderRouter);
-app.use("/products", productroute);
+router.use("/products", productroute);
 
 router.use("/discounts", discountroute);
 router.use("/categories", categoryroute);
