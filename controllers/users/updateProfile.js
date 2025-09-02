@@ -57,4 +57,3 @@ const updateProfile = async (req, res) => {
 };
 export default updateProfile;
 
-export default updateProfile

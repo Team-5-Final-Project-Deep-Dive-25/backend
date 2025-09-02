@@ -14,7 +14,7 @@ import { getProfile } from "../controllers/users/getProfile.js";
 import { updateProfile } from "../controllers/users/updateProfile.js";
 
 const userRouter = express.Router();
-const upload = multer({ storage: multer.memoryStorage() });
+// const upload = multer({ storage: multer.memoryStorage() });
 
 userRouter.post(
   "/register",
