@@ -1,5 +1,6 @@
 import express from "express";
 import { getAllUsers } from "../controllers/users/admin/getAll.js";
+import { getUsersIds } from "../controllers/users/admin/usersIds.js";
 import { login } from "../controllers/users/login.js";
 import { register } from "../controllers/users/register.js";
 import { protect } from "../middlewares/auth.js";
@@ -10,8 +11,11 @@ import { registerValidation } from "../controllers/validation/register.js";
 import { loginValidation } from "../controllers/validation/login.js";
 import { changeRole } from "../controllers/users/admin/changeRole.js";
 import { getProfile } from "../controllers/users/getProfile.js";
-
+import updateProfile from "../controllers/users/updateProfile.js";
+import { normalizeProductImages } from "../controllers/validation/product.js";
+import multer from "multer";
 const userRouter = express.Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
 userRouter.post(
   "/register",
@@ -21,6 +25,12 @@ userRouter.post(
 
 userRouter.post("/login", loginValidation, asyncWrapper(login));
 
+userRouter.get(
+  "/usersId",
+  protect,
+  authorizeRoles(userRoles.ADMIN),
+  asyncWrapper(getUsersIds)
+);
 userRouter.get(
   "/allusers",
   protect,
@@ -34,6 +44,13 @@ userRouter.put(
   asyncWrapper(changeRole)
 );
 
-userRouter.get("/profile",protect, getProfile);
+userRouter.get("/profile", protect, getProfile);
+userRouter.put(
+  "/profile",
+  upload.single("image"),
+  normalizeProductImages,
+  protect,
+  asyncWrapper(updateProfile)
+);
 
 export default userRouter;
