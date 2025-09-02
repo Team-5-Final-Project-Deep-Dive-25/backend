@@ -1,13 +1,18 @@
-
-import asyncWrapper from "../../middlewares/asyncWrapper.js";
 import { User } from "../../models/userModel.js";
 import bcrypt from "bcryptjs";
 
-export const updateProfile = asyncWrapper(async (req, res) => {
-  const userId = req.user.id; 
-  let { firstName, lastName, email, address, currentPassword, newPassword } = req.body;
-
-  const user = await User.findById(userId);
+const updateProfile = async (req, res) => {
+  const userId = req.user.id;
+  const {
+    firstname,
+    lastname,
+    email,
+    gender,
+    address,
+    image,
+    oldPassword,
+    newPassword,
+  } = req.body;
 
   if (!user) {
     return res.status(404).json({
@@ -17,34 +22,27 @@ export const updateProfile = asyncWrapper(async (req, res) => {
     });
   }
 
+  // Update profile fields
+  if (firstname && lastname) user.name = firstname + " " + lastname;
+  if (email) user.email = email.toLowerCase();
+  if (gender) user.gender = gender.toUpperCase();
+  if (address) user.address = address;
+  if (image) user.image = image;
 
-  const isMatch = await bcrypt.compare(currentPassword, user.password);
-  if (!isMatch) {
-    return res.status(401).json({
-      success: false,
-      status: 401,
-      message: "Current password is incorrect",
-    });
+  // Handle password change
+  if (oldPassword && newPassword) {
+    const matched = await bcrypt.compare(oldPassword, user.password);
+    if (!matched) {
+      return res.status(400).json({
+        success: FAIL,
+        status: 400,
+        message: "Old password is incorrect",
+      });
+    }
+    user.password = await bcrypt.hash(newPassword, 15);
   }
 
-
-  let updatedPassword = user.password;
-  if (newPassword) {
-    const salt = await bcrypt.genSalt(10);
-    updatedPassword = await bcrypt.hash(newPassword, salt);
-  }
-
-  const fullName = `${firstName} ${lastName}`.trim();
-
-  const updatedUser = await User.findByIdAndUpdate(
-    userId,
-    { name: fullName, email, address, password: updatedPassword },
-    { new: true, runValidators: true }
-  );
-
-
-  const [updatedFirstName, ...rest] = updatedUser.name.split(" ");
-  const updatedLastName = rest.join(" ");
+  await user.save();
 
   return res.status(200).json({
     success: true,
@@ -56,6 +54,7 @@ export const updateProfile = asyncWrapper(async (req, res) => {
       address: updatedUser.address,
     },
   });
-});
+};
+export default updateProfile;
 
-
+export default updateProfile

@@ -1,5 +1,7 @@
 import asyncWrapper from "../../middlewares/asyncWrapper.js";
-import {User} from "../../models/userModel.js";
+import { User } from "../../models/userModel.js";
+import { SUCCESS, FAIL } from "../../utilities/successWords.js";
+
 export const getProfile = asyncWrapper(async (req, res) => {
   const userId = req.user.id;
   const user = await User.findById(userId);
