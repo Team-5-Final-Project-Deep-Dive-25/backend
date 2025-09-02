@@ -1,5 +1,4 @@
 import { User } from "../../models/userModel.js";
-import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 import bcrypt from "bcryptjs";
 
 const updateProfile = async (req, res) => {
@@ -15,13 +14,11 @@ const updateProfile = async (req, res) => {
     newPassword,
   } = req.body;
 
-  // Find user and ensure not soft deleted
-  const user = await User.findOne({ _id: userId, deleted_at: null });
   if (!user) {
     return res.status(404).json({
-      success: FAIL,
+      success: false,
       status: 404,
-      message: "User is not found",
+      message: "User not found",
     });
   }
 
@@ -48,16 +45,15 @@ const updateProfile = async (req, res) => {
   await user.save();
 
   return res.status(200).json({
-    success: SUCCESS,
+    success: true,
     status: 200,
-    message: "Profile Updated Successfully",
     data: {
-      name: user.name,
-      email: user.email,
-      gender: user.gender,
-      address: user.address,
-      image: user.image,
+      firstName: updatedFirstName,
+      lastName: updatedLastName,
+      email: updatedUser.email,
+      address: updatedUser.address,
     },
   });
 };
 export default updateProfile;
+
