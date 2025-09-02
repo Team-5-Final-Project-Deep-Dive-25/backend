@@ -1,55 +1,61 @@
+
+import asyncWrapper from "../../middlewares/asyncWrapper.js";
 import { User } from "../../models/userModel.js";
-import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 import bcrypt from "bcryptjs";
 
-const updateProfile = async (req, res) => {
-  const userId = req.user.id;
-  const { name, email, gender, address, image, oldPassword, newPassword } =
-    req.body;
+export const updateProfile = asyncWrapper(async (req, res) => {
+  const userId = req.user.id; 
+  let { firstName, lastName, email, address, currentPassword, newPassword } = req.body;
 
-  // Find user and ensure not soft deleted
-  const user = await User.findOne({ _id: userId, deleted_at: null });
+  const user = await User.findById(userId);
+
   if (!user) {
     return res.status(404).json({
-      success: FAIL,
+      success: false,
       status: 404,
-      message: "User is not found",
+      message: "User not found",
     });
   }
 
-  // Update profile fields
-  if (name) user.name = name;
-  if (email) user.email = email.toLowerCase();
-  if (gender) user.gender = gender.toUpperCase();
-  if (address) user.address = address;
-  if (image) user.image = image;
 
-  // Handle password change
-  if (oldPassword && newPassword) {
-    const matched = await bcrypt.compare(oldPassword, user.password);
-    if (!matched) {
-      return res.status(400).json({
-        success: FAIL,
-        status: 400,
-        message: "Old password is incorrect",
-      });
-    }
-    user.password = await bcrypt.hash(newPassword, 15);
+  const isMatch = await bcrypt.compare(currentPassword, user.password);
+  if (!isMatch) {
+    return res.status(401).json({
+      success: false,
+      status: 401,
+      message: "Current password is incorrect",
+    });
   }
 
-  await user.save();
+
+  let updatedPassword = user.password;
+  if (newPassword) {
+    const salt = await bcrypt.genSalt(10);
+    updatedPassword = await bcrypt.hash(newPassword, salt);
+  }
+
+  const fullName = `${firstName} ${lastName}`.trim();
+
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    { name: fullName, email, address, password: updatedPassword },
+    { new: true, runValidators: true }
+  );
+
+
+  const [updatedFirstName, ...rest] = updatedUser.name.split(" ");
+  const updatedLastName = rest.join(" ");
 
   return res.status(200).json({
-    success: SUCCESS,
+    success: true,
     status: 200,
-    message: "Profile Updated Successfully",
     data: {
-      name: user.name,
-      email: user.email,
-      gender: user.gender,
-      address: user.address,
-      image: user.image,
+      firstName: updatedFirstName,
+      lastName: updatedLastName,
+      email: updatedUser.email,
+      address: updatedUser.address,
     },
   });
-};
-export default updateProfile;
+});
+
+
