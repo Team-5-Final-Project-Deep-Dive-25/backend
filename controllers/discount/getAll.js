@@ -18,7 +18,7 @@ const getAll = async (req, res) => {
     return res.status(404).json({
       success: FAIL,
       status: 404,
-      message: "No Discounts found",
+      message: "Discounts are not found",
     });
   }
   const total = await Discount.countDocuments({ deleted_at: null });
@@ -26,7 +26,7 @@ const getAll = async (req, res) => {
   res.status(200).json({
     success: SUCCESS,
     status: 200,
-    message: "All Discounts Fetched successfully",
+    message: "All Discounts Retrieved Successfully",
     data: discounts,
     total,
     page,

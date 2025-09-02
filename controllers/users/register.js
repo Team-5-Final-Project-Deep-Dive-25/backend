@@ -7,20 +7,29 @@ dotenv.config();
 
 export const register = async (req, res) => {
   const { name, email, password, gender, address } = req.body;
-         
+
   const olduser = await User.findOne({ email: req.body.email.toLowerCase() });
   if (olduser) {
     return res
       .status(400)
       .json({ status: 400, success: FAIL, message: "user already exist." });
   }
-  const hashedpassword = await bcrypt.hash(password, 15);
+  const hashedpassword = await bcrypt.hash(password, 10);
+  let image = "";
+  if (gender.toUpperCase() === "MALE") {
+    image =
+      "https://res.cloudinary.com/dweffiohi/image/upload/v1756798195/tq5ud769xe3meqlel2lj.jpg";
+  } else if (gender.toUpperCase() === "FEMALE") {
+    image =
+      "https://res.cloudinary.com/dweffiohi/image/upload/v1756798194/kxd3fv4kuoiozsglw1ry.jpg";
+  }
   const newUser = new User({
     name,
     email: email.toLowerCase(),
     password: hashedpassword,
-    gender,
+    gender: gender.toUpperCase(),
     address,
+    image,
   });
   await newUser.save();
 
@@ -29,10 +38,10 @@ export const register = async (req, res) => {
     role: newUser.role,
   });
 
-  res.status(201).json({
-    status: 201,  
+  return res.status(201).json({
+    status: 201,
     success: SUCCESS,
-    message: "User registered succesfully",
+    message: "User Registered Successfully",
     data: {
       token,
       role: newUser.role,

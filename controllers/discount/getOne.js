@@ -19,12 +19,12 @@ export const getOne = async (req, res) => {
   if (!discount) {
     return res
       .status(404)
-      .json({ success: FAIL, status: 404, message: "Discount not found" });
+      .json({ success: FAIL, status: 404, message: "Discount is not found" });
   }
   res.status(200).json({
     success: SUCCESS,
     status: 200,
-    message: "Discount fetched successfully",
+    message: "Discount Data Retrieved Successfully",
     data: discount,
   });
 };

@@ -12,26 +12,20 @@ export const getAll = async (req, res) => {
   )
     .skip(skip)
     .limit(limit);
-  if (categories.length === 0) {
-    return res.status(404).json({
-      success: FAIL,
-      status: 404,
-      message: "No Categories found",
-    });
-  }
   const total = await Category.countDocuments({ deleted_at: null });
 
   if (!categories || categories.length === 0) {
     return res.status(404).json({
       success: FAIL,
       status: 404,
-      message: "No categories found",
+      message: "Categories are not found",
     });
   }
 
   return res.status(200).json({
     success: SUCCESS,
     status: 200,
+    message: "All Categories Retrieved Successfully",
     data: categories,
     total,
     page,

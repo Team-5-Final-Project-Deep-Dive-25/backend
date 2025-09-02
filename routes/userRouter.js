@@ -1,5 +1,6 @@
 import express from "express";
 import { getAllUsers } from "../controllers/users/admin/getAll.js";
+import { getUsersIds } from "../controllers/users/admin/usersIds.js";
 import { login } from "../controllers/users/login.js";
 import { register } from "../controllers/users/register.js";
 import { protect } from "../middlewares/auth.js";
@@ -13,6 +14,7 @@ import { getProfile } from "../controllers/users/getProfile.js";
 import { updateProfile } from "../controllers/users/updateProfile.js";
 
 const userRouter = express.Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
 userRouter.post(
   "/register",
@@ -23,17 +25,24 @@ userRouter.post(
 userRouter.post("/login", loginValidation, asyncWrapper(login));
 
 userRouter.get(
+  "/usersId",
+  protect,
+  authorizeRoles(userRoles.ADMIN),
+  asyncWrapper(getUsersIds)
+);
+userRouter.get(
   "/allusers",
   protect,
   authorizeRoles(userRoles.ADMIN),
   asyncWrapper(getAllUsers)
 );
-userRouter.patch(
+userRouter.put(
   "/changerole",
   protect,
   authorizeRoles(userRoles.ADMIN),
   asyncWrapper(changeRole)
 );
+
 
 userRouter.get("/profile",
    protect,
@@ -42,5 +51,6 @@ userRouter.get("/profile",
 userRouter.patch("/update",
    protect,
    asyncWrapper(updateProfile));
+
 
 export default userRouter;

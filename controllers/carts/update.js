@@ -1,30 +1,42 @@
-// controllers/cart/update.js
 import Cart from "../../models/cartModel.js";
+import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 
-const updateCartItem = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { quantity, productID } = req.body;
+const updateOne = async (req, res) => {
+  const buyerID = req.user.id;
+  const { quantity, productID } = req.body;
 
-    if (!quantity || quantity < 1) {
-      return res.status(400).json({ message: "Quantity must be at least 1" });
-    }
-
-    const updatedItem = await Cart.findByIdAndUpdate(
-      id,
-      { quantity, productID },
-      { new: true }
-    ).populate("productID");
-
-    if (!updatedItem) {
-      return res.status(404).json({ message: "Cart item not found" });
-    }
-
-    res.json(updatedItem);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  const item = await Cart.findOne({ buyerID });
+  if (!item) {
+    return res.status(404).json({
+      success: FAIL,
+      status: 404,
+      message: "Cart is not found",
+    });
   }
+
+  if (!quantity) {
+    const q = Number(quantity);
+    if (!Number.isFinite(q) || q < 1) {
+      return res.status(400).json({
+        success: FAIL,
+        status: 400,
+        message: "Quantity must be a number and at least 1",
+      });
+    }
+  }
+
+  if (productID) {
+    item.products.push({ productID, quantity });
+  }
+
+  await item.save();
+
+  return res.status(200).json({
+    success: SUCCESS,
+    status: 200,
+    message: "Cart updated Successfully",
+    data: item,
+  });
 };
 
-export default updateCartItem;
-
+export default updateOne;
