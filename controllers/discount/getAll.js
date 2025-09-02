@@ -1,41 +1,37 @@
-import { Discount } from "../../models/discount.js";
-import { SUCCESS } from "../../utilities/successWords.js";
+import { Discount } from "../../models/discountModel.js";
+import { FAIL, SUCCESS } from "../../utilities/successWords.js";
 
-const getAllDiscounts = async (req, res) => {
-  try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
+const getAll = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
 
-    const [discounts, total] = await Promise.all([
-      Discount.find(
-        { deleted_at: null },
-        { __v: 0, updatedAt: 0, deleted_at: 0 }
-      )
-        .populate("productId")
-        .populate("categoryId")
-        .skip(skip)
-        .limit(limit),
-      Discount.countDocuments({ deleted_at: null }),
-    ]);
-
-    res.status(200).json({
-      success: SUCCESS,
-      status: 200,
-      message: "All Discounts Fetched successfully",
-      data: discounts,
-      pagination: {
-        total,
-        page,
-        limit,
-        pages: Math.ceil(total / limit),
-      },
+  const discounts = await Discount.find(
+    { deleted_at: null },
+    { __v: 0, updatedAt: 0, deleted_at: 0 }
+  )
+    .populate("productId", "-__v -updatedAt -createdAt -deleted_at")
+    .populate("categoryId", "-__v -updatedAt -createdAt -deleted_at")
+    .skip(skip)
+    .limit(limit);
+  if (discounts.length === 0) {
+    return res.status(404).json({
+      success: FAIL,
+      status: 404,
+      message: "No Discounts found",
     });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ success: "fail", status: 500, message: error.message });
   }
+  const total = await Discount.countDocuments({ deleted_at: null });
+
+  res.status(200).json({
+    success: SUCCESS,
+    status: 200,
+    message: "All Discounts Fetched successfully",
+    data: discounts,
+    total,
+    page,
+    pages: Math.ceil(total / limit),
+  });
 };
 
-export default getAllDiscounts;
+export default getAll;
