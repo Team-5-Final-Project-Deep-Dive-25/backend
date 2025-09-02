@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
-const aboutSchema = mongoose.Schema;
-({
+const aboutSchema = mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
   track: { type: String, required: true },
