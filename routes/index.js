@@ -7,6 +7,7 @@ import categoryroute from "./categoryRouter.js";
 import userRouter from "./userRouter.js";
 import aboutRouter from "./aboutRouter.js";
 import wishlistRouter from "./wishlistRouter.js";
+import contactRouter from "./contactRouter.js";
 const router = express.Router();
 
 router.use("/carts", cartRouter);
@@ -18,5 +19,6 @@ router.use("/categories", categoryroute);
 router.use("/users", userRouter);
 router.use("/about", aboutRouter);
 router.use("/wishlist", wishlistRouter);
+router.use("/contact", contactRouter);
 
 export default router;
