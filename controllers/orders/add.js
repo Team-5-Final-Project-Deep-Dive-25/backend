@@ -6,8 +6,8 @@ import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 const add = async (req, res) => {
   const { status } = req.body;
   const buyerID = req.user.id;
-
-  const cart = await Cart.findOne({ buyerID }).populate("products.productID");
+  
+  const cart = await Cart.findOne({ buyerID,deleted_at: null }).populate("products.productID");
   if (!cart || cart.products.length === 0) {
     return res.status(404).json({
       status: 404,

@@ -14,7 +14,7 @@ const router = express.Router();
 // Routes
 router.post("/", protect, add);
 router.get("/", protect, getAll);
-router.get("/:id", protect, authorizeRoles(userRoles.ADMIN), getOne);
+router.get("/:id", protect, authorizeRoles(userRoles.USER), getOne);
 //router.post("/", validateAddOrder, addOrder);
 router.put("/:id", protect, updateOne);
 router.delete("/:id", protect, deleteOne);

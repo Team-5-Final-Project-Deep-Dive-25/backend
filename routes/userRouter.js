@@ -1,4 +1,5 @@
 import express from "express";
+import multer from "multer";
 import { getAllUsers } from "../controllers/users/admin/getAll.js";
 import { getUsersIds } from "../controllers/users/admin/usersIds.js";
 import { login } from "../controllers/users/login.js";
