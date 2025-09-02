@@ -19,13 +19,13 @@ const deleteOne = async (req, res) => {
     return res.status(404).json({
       success: FAIL,
       status: 404,
-      message: "Category not found",
+      message: "Category is not found",
     });
   }
   return res.status(200).json({
     success: SUCCESS,
     status: 200,
-    message: "Category deleted successfully",
+    message: "Category Deleted Successfully",
   });
 };
 export default deleteOne;

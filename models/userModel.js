@@ -52,6 +52,10 @@ const userSchema = new mongoose.Schema(
       maxlength: 40,
     },
     deleted_at: { type: Date, default: null },
+    image: {
+      type: String,
+      default: "dd",
+    },
   },
   { timestamps: true }
 );
