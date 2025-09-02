@@ -12,6 +12,9 @@ import deleteOne from "../controllers/products/delete.js";
 import { deleteProductImages } from "../controllers/products/deleteImages.js";
 import asyncWrapper from "../middlewares/asyncWrapper.js";
 import { protect } from "../middlewares/auth.js";
+import { authorizeRoles } from "../middlewares/authrole.js";
+import userRoles from "../utilities/userRoles.js";
+
 import multer from "multer";
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -20,6 +23,8 @@ router.get("/", protect, asyncWrapper(getAll));
 router.get("/:id", protect, asyncWrapper(getOne));
 router.post(
   "/",
+  protect,
+  authorizeRoles(userRoles.ADMIN),
   upload.array("images"),
   normalizeProductImages,
   productValidation("create"),
@@ -28,12 +33,24 @@ router.post(
 );
 router.put(
   "/:id",
+  protect,
+  authorizeRoles(userRoles.ADMIN),
   upload.array("images"),
   normalizeProductImages,
   productValidation("update"),
   handleProductValidation,
   asyncWrapper(updateOne)
 );
-router.delete("/:id", asyncWrapper(deleteOne));
-router.delete("/:id/images", asyncWrapper(deleteProductImages));
+router.delete(
+  "/:id",
+  protect,
+  authorizeRoles(userRoles.ADMIN),
+  asyncWrapper(deleteOne)
+);
+router.delete(
+  "/:id/images",
+  protect,
+  authorizeRoles(userRoles.ADMIN),
+  asyncWrapper(deleteProductImages)
+);
 export default router;

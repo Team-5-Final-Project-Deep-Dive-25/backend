@@ -6,8 +6,14 @@ const getAll = async (req, res) => {
   const limit = parseInt(req.query.limit) || 10;
   const skip = (page - 1) * limit;
 
-  const total = await Order.countDocuments({ deleted_at: null });
-  const orders = await Order.find({ deleted_at: null })
+  // Determine filter based on user role
+  let filter = { deleted_at: null };
+  if (req.user.role !== "ADMIN") {
+    filter.buyerID = req.user.id;
+  }
+
+  const total = await Order.countDocuments(filter);
+  const orders = await Order.find(filter)
     .select("-createdAt -updatedAt -__v -deleted_at")
     .populate("buyerID", "name email")
     .skip(skip)

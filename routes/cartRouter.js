@@ -10,10 +10,12 @@ import {
 } from "../controllers/validation/addCart.js";
 import asyncWrapper from "../middlewares/asyncWrapper.js";
 import { protect } from "../middlewares/auth.js";
+import { authorizeRoles } from "../middlewares/authrole.js";
+import userRoles from "../utilities/userRoles.js";
 
 const router = express.Router();
 
-router.get("/", protect, asyncWrapper(getAll));
+router.get("/", protect, authorizeRoles(userRoles.ADMIN), asyncWrapper(getAll));
 router.post(
   "/",
   protect,
