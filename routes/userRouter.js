@@ -47,9 +47,9 @@ userRouter.put(
 userRouter.get("/profile", protect, getProfile);
 userRouter.put(
   "/profile",
+  protect,
   upload.single("image"),
   normalizeProductImages,
-  protect,
   asyncWrapper(updateProfile)
 );
 
