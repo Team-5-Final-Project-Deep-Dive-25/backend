@@ -1,6 +1,6 @@
 import asyncWrapper from "../../middlewares/asyncWrapper.js";
 import { User } from "../../models/userModel.js";
-import { SUCCESS } from "../../utilities/successWords.js";
+import { SUCCESS,FAIL } from "../../utilities/successWords.js";
 
 export const getProfile = asyncWrapper(async (req, res) => {
   const userId = req.user.id;
@@ -22,7 +22,7 @@ export const getProfile = asyncWrapper(async (req, res) => {
   return res.status(200).json({
     success: SUCCESS,
     status: 200,
-    message: "User profile retrieved successfully",
+    message: "User profile Retrieved Successfully",
     data: user,
   });
 });

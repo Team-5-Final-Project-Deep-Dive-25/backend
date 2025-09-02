@@ -20,28 +20,26 @@ export const categoryValidation = (mode = "create") => [
         .notEmpty()
         .withMessage("title cannot be empty")
         .isLength({ min: 3, max: 40 })
-        .withMessage("name must be between 3 and 40 characters"),
+        .withMessage("title must be between 3 and 40 characters"),
 
   mode === "create"
     ? check("description")
         .optional()
         .isString()
         .withMessage("description must be a string")
-        .isLength({ min: 3, max: 40 })
-        .withMessage("name must be between 3 and 40 characters")
+        .isLength({ min: 4, max: 150 })
+        .withMessage("description must be between 3 and 40 characters")
     : check("description")
         .optional()
         .isString()
         .withMessage("description must be a string"),
 
   mode === "create"
-    ? check("discount")
+    ? check("discountID")
         .optional()
         .isMongoId()
         .withMessage("discount must be a valid MongoDB ObjectId")
-        .isLength({ min: 3, max: 40 })
-        .withMessage("name must be between 3 and 40 characters")
-    : check("discount")
+    : check("discountID")
         .optional()
         .isMongoId()
         .withMessage("discount must be a valid MongoDB ObjectId"),

@@ -4,12 +4,13 @@ import { Product } from "../../models/productModel.js";
 import { Category } from "../../models/categoryModel.js";
 
 const add = async (req, res, next) => {
-  const { productId, categoryId, type, value, endDate } = req.body;
+  const { productId, categoryId, type, value, startDate, endDate } = req.body;
   const newDiscount = new Discount({
     productId,
     categoryId,
     type,
     value,
+    startDate,
     endDate,
   });
   const savedDiscount = await newDiscount.save();

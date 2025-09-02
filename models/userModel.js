@@ -48,10 +48,15 @@ const userSchema = new mongoose.Schema(
     address: {
       type: String,
       required: true,
-      minlength: 10,
+      minlength: 5,
       maxlength: 40,
     },
     deleted_at: { type: Date, default: null },
+    image: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/dweffiohi/image/upload/v1756798194/kxd3fv4kuoiozsglw1ry.jpg",
+    },
   },
   { timestamps: true }
 );

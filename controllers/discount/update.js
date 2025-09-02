@@ -74,7 +74,7 @@ const updateOne = async (req, res) => {
   res.status(200).json({
     success: SUCCESS,
     status: 200,
-    message: "Discount updated successfully",
+    message: "Discount Updated Successfully",
     data: discount,
   });
 };

@@ -9,6 +9,7 @@ import getAll from "../controllers/products/getAll.js";
 import getOne from "../controllers/products/getOne.js";
 import updateOne from "../controllers/products/update.js";
 import deleteOne from "../controllers/products/delete.js";
+import { deleteProductImages } from "../controllers/products/deleteImages.js";
 import asyncWrapper from "../middlewares/asyncWrapper.js";
 import { protect } from "../middlewares/auth.js";
 import multer from "multer";
@@ -34,4 +35,5 @@ router.put(
   asyncWrapper(updateOne)
 );
 router.delete("/:id", asyncWrapper(deleteOne));
+router.delete("/:id/images", asyncWrapper(deleteProductImages));
 export default router;

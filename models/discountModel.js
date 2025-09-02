@@ -16,6 +16,7 @@ const discountSchema = new mongoose.Schema(
     ],
     type: { type: String, required: true, enum: ["percentage", "fixed"] },
     value: { type: Number, required: true },
+    startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     deleted_at: { type: Date, default: null },
   },

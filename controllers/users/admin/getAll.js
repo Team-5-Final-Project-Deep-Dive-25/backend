@@ -13,7 +13,7 @@ export const getAllUsers = async (req, res) => {
     return res.status(404).json({
       success: FAIL,
       status: 404,
-      message: "No users found",
+      message: "Carts are not found",
     });
   }
 
@@ -32,7 +32,7 @@ export const getAllUsers = async (req, res) => {
   res.status(200).json({
     success: SUCCESS,
     status: 200,
-    message: "All users data fetched successfully",
+    message: "All Users Retrieved Successfully",
     data: users,
     totalUsers,
     totalPages: Math.ceil(totalUsers / limit),

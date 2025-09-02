@@ -43,6 +43,6 @@ export const changeRole = async (req, res) => {
   return res.status(200).json({
     success: SUCCESS,
     status: 200,
-    message: "User role updated successfully",
+    message: "User Role Updated Successfully",
   });
 };
