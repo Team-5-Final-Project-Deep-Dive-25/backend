@@ -1,7 +1,7 @@
 import { User } from "../../models/userModel.js";
 import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 import generateToken from "../../utilities/generateJWT.js";
-import bcrypt from "bcryptjs";
+import bcrypt, { getRounds } from "bcryptjs";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -15,12 +15,21 @@ export const register = async (req, res) => {
       .json({ status: 400, success: FAIL, message: "user already exist." });
   }
   const hashedpassword = await bcrypt.hash(password, 15);
+  let image = "";
+  if (gender.toUpperCase() === "MALE") {
+    image =
+      "https://res.cloudinary.com/dweffiohi/image/upload/v1756798195/tq5ud769xe3meqlel2lj.jpg";
+  } else if (gender.toUpperCase() === "FEMALE") {
+    image =
+      "https://res.cloudinary.com/dweffiohi/image/upload/v1756798194/kxd3fv4kuoiozsglw1ry.jpg";
+  }
   const newUser = new User({
     name,
     email: email.toLowerCase(),
     password: hashedpassword,
     gender: gender.toUpperCase(),
     address,
+    image,
   });
   await newUser.save();
 
