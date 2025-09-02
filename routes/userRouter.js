@@ -10,6 +10,7 @@ import { registerValidation } from "../controllers/validation/register.js";
 import { loginValidation } from "../controllers/validation/login.js";
 import { changeRole } from "../controllers/users/admin/changeRole.js";
 import { getProfile } from "../controllers/users/getProfile.js";
+import { updateProfile } from "../controllers/users/updateProfile.js";
 
 const userRouter = express.Router();
 
@@ -34,6 +35,12 @@ userRouter.patch(
   asyncWrapper(changeRole)
 );
 
-userRouter.get("/profile", getProfile);
+userRouter.get("/profile",
+   protect,
+   asyncWrapper(getProfile));
+
+userRouter.patch("/update",
+   protect,
+   asyncWrapper(updateProfile));
 
 export default userRouter;
