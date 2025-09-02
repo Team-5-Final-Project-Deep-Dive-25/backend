@@ -27,13 +27,13 @@ userRouter.get(
   authorizeRoles(userRoles.ADMIN),
   asyncWrapper(getAllUsers)
 );
-userRouter.patch(
+userRouter.put(
   "/changerole",
   protect,
   authorizeRoles(userRoles.ADMIN),
   asyncWrapper(changeRole)
 );
 
-userRouter.get("/profile", getProfile);
+userRouter.get("/profile",protect, getProfile);
 
 export default userRouter;

@@ -7,7 +7,7 @@ dotenv.config();
 
 export const register = async (req, res) => {
   const { name, email, password, gender, address } = req.body;
-         
+
   const olduser = await User.findOne({ email: req.body.email.toLowerCase() });
   if (olduser) {
     return res
@@ -19,7 +19,7 @@ export const register = async (req, res) => {
     name,
     email: email.toLowerCase(),
     password: hashedpassword,
-    gender,
+    gender: gender.toUpperCase(),
     address,
   });
   await newUser.save();
@@ -30,7 +30,7 @@ export const register = async (req, res) => {
   });
 
   res.status(201).json({
-    status: 201,  
+    status: 201,
     success: SUCCESS,
     message: "User registered succesfully",
     data: {
