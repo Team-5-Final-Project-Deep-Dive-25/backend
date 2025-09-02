@@ -22,6 +22,12 @@ const orderSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
+    address: {
+      type: String,
+      required: true,
+      minlength: 10,
+      maxlength: 40,
+    },
     deleted_at: { type: Date, default: null },
   },
   { timestamps: true }

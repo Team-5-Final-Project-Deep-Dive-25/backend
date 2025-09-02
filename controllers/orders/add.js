@@ -1,6 +1,6 @@
-
 import Cart from "../../models/cartModel.js";
 import Order from "../../models/orderModel.js";
+import { User } from "../../models/userModel.js";
 import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 
 const addOrder = async (req, res) => {
@@ -23,12 +23,13 @@ const addOrder = async (req, res) => {
         total += item.productID.price * item.quantity;
       }
     });
-
+    const userAddress = await User.findById(buyerID, { address: 1 });
     const order = await Order.create({
       buyerID,
       cartID: cart._id,
       status: status || "pending",
       total,
+      address: userAddress.address,
     });
 
     res.status(201).json({
