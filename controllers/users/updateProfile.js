@@ -4,8 +4,16 @@ import bcrypt from "bcryptjs";
 
 const updateProfile = async (req, res) => {
   const userId = req.user.id;
-  const { name, email, gender, address, image, oldPassword, newPassword } =
-    req.body;
+  const {
+    firstname,
+    lastname,
+    email,
+    gender,
+    address,
+    image,
+    oldPassword,
+    newPassword,
+  } = req.body;
 
   // Find user and ensure not soft deleted
   const user = await User.findOne({ _id: userId, deleted_at: null });
@@ -18,7 +26,7 @@ const updateProfile = async (req, res) => {
   }
 
   // Update profile fields
-  if (name) user.name = name;
+  if (firstname && lastname) user.name = firstname + " " + lastname;
   if (email) user.email = email.toLowerCase();
   if (gender) user.gender = gender.toUpperCase();
   if (address) user.address = address;
