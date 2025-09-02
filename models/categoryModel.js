@@ -4,7 +4,7 @@ const categorySchema = new mongoose.Schema(
   {
     title: { type: String, required: true, minlength: 3, maxlength: 40 },
     description: { type: String, minlength: 5, maxlength: 150 },
-    discount: {
+    discountId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Discount",
       default: null,

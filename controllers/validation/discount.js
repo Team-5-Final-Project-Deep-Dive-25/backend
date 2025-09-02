@@ -152,24 +152,56 @@ export const discountValidation = (mode = "create") => [
         }),
 
   mode === "create"
+    ? check("startDate")
+        .exists()
+        .withMessage("startDate is required")
+        .isISO8601()
+        .withMessage("startDate must be a valid date")
+        .custom((value) => {
+          if (new Date(value) < new Date())
+            throw new Error("startDate must be in the future");
+          return true;
+        })
+    : check("startDate")
+        .optional()
+        .isISO8601()
+        .withMessage("startDate must be a valid date")
+        .custom((value) => {
+          if (!value) return true;
+          if (new Date(value) < new Date())
+            throw new Error("startDate must be in the future");
+          return true;
+        }),
+
+  mode === "create"
     ? check("endDate")
         .exists()
         .withMessage("endDate is required")
         .isISO8601()
         .withMessage("endDate must be a valid date")
-        .custom((value) => {
+        .custom((value, { req }) => {
           if (new Date(value) < new Date())
             throw new Error("endDate must be in the future");
+          if (
+            req.body.startDate &&
+            new Date(value) <= new Date(req.body.startDate)
+          )
+            throw new Error("endDate must be after startDate");
           return true;
         })
     : check("endDate")
         .optional()
         .isISO8601()
         .withMessage("endDate must be a valid date")
-        .custom((value) => {
+        .custom((value, { req }) => {
           if (!value) return true;
           if (new Date(value) < new Date())
             throw new Error("endDate must be in the future");
+          if (
+            req.body.startDate &&
+            new Date(value) <= new Date(req.body.startDate)
+          )
+            throw new Error("endDate must be after startDate");
           return true;
         }),
 ];

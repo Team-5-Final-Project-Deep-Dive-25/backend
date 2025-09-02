@@ -1,20 +1,36 @@
+// controllers/cart/getAll.js
 import Cart from "../../models/cartModel.js";
+import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 
-const getAllCartItems = async (req, res) => {
-  const { buyerID } = req.user._id;
-  const filter = buyerID ? { buyerID } : {};
-  const cartItems = await Cart.find(filter, {
-    __v: 0,
-    createdAt: 0,
-    updatedAt: 0,
-  }).populate("productID");
+const getAll = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
 
-  res.json({
+  const total = await Cart.countDocuments({ deleted_at: null });
+  const carts = await Cart.find({ deleted_at: null })
+    .populate("products.productID")
+    .populate("buyerID")
+    .skip(skip)
+    .limit(limit);
+
+  if (!carts || carts.length === 0) {
+    return res.status(404).json({
+      status: 404,
+      success: FAIL,
+      message: "No carts found",
+    });
+  }
+
+  return res.status(200).json({
     status: 200,
-    success: "success",
-    message: "Cart items fetched successfully",
-    data: cartItems,
+    success: SUCCESS,
+    message: "All Carts Retrieved Successfully",
+    data: carts,
+    total,
+    page,
+    pages: Math.ceil(total / limit),
   });
 };
 
-export default getAllCartItems;
+export default getAll;

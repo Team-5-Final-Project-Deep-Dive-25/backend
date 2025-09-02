@@ -3,7 +3,7 @@ import { SUCCESS, FAIL } from "../../../utilities/successWords.js";
 import userRoles from "../../../utilities/userRoles.js";
 export const changeRole = async (req, res) => {
   let { id, newRole } = req.body;
-  newRole = newRole.toUpperCase();  
+  newRole = newRole.toUpperCase();
   if (!id || !newRole) {
     return res.status(400).json({
       success: FAIL,
@@ -43,6 +43,6 @@ export const changeRole = async (req, res) => {
   return res.status(200).json({
     success: SUCCESS,
     status: 200,
-    message: "User role updated successfully",
+    message: "User Role Updated Successfully",
   });
 };

@@ -19,13 +19,13 @@ const deleteOne = async (req, res) => {
     return res.status(404).json({
       success: FAIL,
       status: 404,
-      message: "Discount not found",
+      message: "Discount is not found",
     });
   }
   res.status(200).json({
     success: SUCCESS,
     status: 200,
-    message: "Discount deleted successfully",
+    message: "Discount Deleted Successfully",
   });
 };
 export default deleteOne;

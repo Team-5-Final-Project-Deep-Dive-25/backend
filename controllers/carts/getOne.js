@@ -1,27 +1,26 @@
-// controllers/cart/getOne.js
 import Cart from "../../models/cartModel.js";
+import { SUCCESS } from "../../utilities/successWords.js";
 
-const getCartItem = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const buyerId = req.user._id;
+const getOne = async (req, res) => {
+  const buyerId = req.user.id;
 
-    const cartItem = await Cart.find(
-      {
-        _id: id,
-        buyerID: buyerId,
-      },
-      { __v: 0, createdAt: 0, updatedAt: 0 }
-    ).populate("productID");
+  const cart = await Cart.findOne(
+    {
+      buyerID: buyerId,
+      deleted_at: null,
+    },
+    { __v: 0, createdAt: 0, updatedAt: 0, deleted_at: 0 }
+  ).populate("products.productID");
 
-    if (!cartItem) {
-      return res.status(404).json({ message: "Cart item not found" });
-    }
-
-    res.json(cartItem);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  if (!cart) {
+    return res.status(404).json({ message: "Cart is not found" });
   }
+
+  return res.status(200).json({
+    success: SUCCESS,
+    status: 200,
+    message: "Cart Data Retrieved Successfully",
+  });
 };
 
-export default getCartItem;
+export default getOne;

@@ -1,3 +1,4 @@
+
 import asyncWrapper from "../../middlewares/asyncWrapper.js";
 import { User } from "../../models/userModel.js";
 import bcrypt from "bcryptjs";
@@ -56,3 +57,5 @@ export const updateProfile = asyncWrapper(async (req, res) => {
     },
   });
 });
+
+
