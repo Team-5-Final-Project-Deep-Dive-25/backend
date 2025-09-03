@@ -2,7 +2,7 @@ import { Discount } from "../../models/discountModel.js";
 import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 import mongoose from "mongoose";
 const deleteOne = async (req, res) => {
-  const { id } = parseInt(req.params);
+  const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({
       success: false,

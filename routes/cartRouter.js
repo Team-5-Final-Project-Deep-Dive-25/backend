@@ -15,7 +15,7 @@ import userRoles from "../utilities/userRoles.js";
 
 const router = express.Router();
 
-router.get("/", protect, authorizeRoles(userRoles.USER), asyncWrapper(getAll));
+// router.get("/", protect, authorizeRoles(userRoles.USER), asyncWrapper(getAll));
 router.post(
   "/",
   protect,
@@ -25,12 +25,7 @@ router.post(
   handleAddCartValidation,
   asyncWrapper(add)
 );
-router.get(
-  "/one",
-  protect,
-  authorizeRoles(userRoles.USER),
-  asyncWrapper(getOne)
-);
+router.get("/", protect, authorizeRoles(userRoles.USER), asyncWrapper(getOne));
 router.put(
   "/",
   protect,

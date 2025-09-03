@@ -16,6 +16,13 @@ const deleteOne = async (req, res) => {
       message: "Order is not found",
     });
   }
+  if (order.status !== "pending") {
+    return res.status(404).json({
+      success: FAIL,
+      status: 404,
+      message: "This Order is on progress now",
+    });
+  }
   order.deleted_at = new Date();
   await order.save();
   return res.status(200).json({

@@ -5,7 +5,7 @@ export const deleteProductImages = async (req, res) => {
   try {
     const productId = req.params.id;
     const { images } = req.body; // images: array of image URLs to delete
-    if (!Array.isArray(images) || images.length === 0) {
+    if (!Array.isArray(images) || images.length <= 3) {
       return res.status(400).json({
         success: FAIL,
         status: 400,

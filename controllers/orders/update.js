@@ -5,9 +5,9 @@ import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 const updateOne = async (req, res) => {
   const orderId = req.params.id;
   const { status } = req.body;
-  const buyerID = req.user.id;
+  // const buyerID = req.user.id;
 
-  const order = await Order.findOne({ _id: orderId, buyerID });
+  const order = await Order.findOne({ _id: orderId });
   if (!order) {
     return res.status(404).json({
       status: 404,

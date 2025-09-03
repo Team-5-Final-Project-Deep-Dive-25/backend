@@ -8,7 +8,6 @@ import { sendVerificationEmail } from "../../middlewares/emailVerification.js";
 dotenv.config();
 
 export const register = async (req, res) => {
-
   const { name, email, password, gender, address } = req.body;
 
   const olduser = await User.findOne({ email: req.body.email.toLowerCase() });
@@ -26,6 +25,7 @@ export const register = async (req, res) => {
     image =
       "https://res.cloudinary.com/dweffiohi/image/upload/v1756798194/kxd3fv4kuoiozsglw1ry.jpg";
   }
+  const verificationToken = crypto.randomBytes(32).toString("hex");
   const newUser = new User({
     name,
     email: email.toLowerCase(),
@@ -34,28 +34,23 @@ export const register = async (req, res) => {
     address,
     image,
     isVerified: false,
-    verificationToken: crypto.randomBytes(32).toString("hex")
+    verificationToken: verificationToken,
   });
 
-  await newUser.save();
-
-
-try {
-  await sendVerificationEmail(email, newUser.verificationToken);
-} catch (err) {
-  console.error("Email sending error:", err);
-  return res.status(500).json({
-    status: 500,
-    success: FAIL,
-    message: err.message || "Email sending failed",
-  });
-}
+  try {
+    await sendVerificationEmail(email, verificationToken);
+    await newUser.save();
+  } catch (err) {
+    console.error("Email sending error:", err);
+    return res.status(500).json({
+      status: 500,
+      success: FAIL,
+      message: err.message || "Email sending failed",
+    });
+  }
   res.status(201).json({
     status: 201,
     success: SUCCESS,
     message: "User created, verification email sent!",
-    data: {
-      verificationToken: newUser.verificationToken
-    }
   });
 };
