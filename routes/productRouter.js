@@ -19,8 +19,8 @@ import multer from "multer";
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-router.get("/", protect, asyncWrapper(getAll));
-router.get("/:id", protect, asyncWrapper(getOne));
+router.get("/", asyncWrapper(getAll));
+router.get("/:id", asyncWrapper(getOne));
 router.post(
   "/",
   protect,

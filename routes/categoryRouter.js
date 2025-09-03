@@ -15,8 +15,8 @@ import userRoles from "../utilities/userRoles.js";
 
 const router = express.Router();
 
-router.get("/", protect, asyncWrapper(getAll));
-router.get("/:id", protect, asyncWrapper(getOne));
+router.get("/", asyncWrapper(getAll));
+router.get("/:id", asyncWrapper(getOne));
 router.post(
   "/",
   protect,

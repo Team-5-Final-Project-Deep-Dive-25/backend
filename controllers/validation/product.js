@@ -96,7 +96,7 @@ export const productValidation = (mode = "create") => [
         .withMessage("stock must be a non-negative integer"),
 
   mode === "create"
-    ? check("categortyId")
+    ? check("categoryId")
         .exists()
         .withMessage("category is required")
         .isMongoId()
@@ -106,7 +106,7 @@ export const productValidation = (mode = "create") => [
           if (!category) return Promise.reject("category not found");
           return true;
         })
-    : check("categortyId")
+    : check("categoryId")
         .optional()
         .isMongoId()
         .withMessage("category must be a valid MongoDB ObjectId")

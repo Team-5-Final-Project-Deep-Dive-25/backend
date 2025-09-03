@@ -12,7 +12,12 @@ export const categoryValidation = (mode = "create") => [
         .notEmpty()
         .withMessage("title cannot be empty")
         .isLength({ min: 3, max: 40 })
-        .withMessage("name must be between 3 and 40 characters")
+        .withMessage("title must be between 3 and 40 characters")
+        .custom(async (value) => {
+          const exists = await Category.findOne({ title: value });
+          if (exists) throw new Error("Category title already exists");
+          return true;
+        })
     : check("title")
         .optional()
         .isString()
@@ -20,7 +25,12 @@ export const categoryValidation = (mode = "create") => [
         .notEmpty()
         .withMessage("title cannot be empty")
         .isLength({ min: 3, max: 40 })
-        .withMessage("title must be between 3 and 40 characters"),
+        .withMessage("title must be between 3 and 40 characters")
+        .custom(async (value) => {
+          const exists = await Category.findOne({ title: value });
+          if (exists) throw new Error("Category title already exists");
+          return true;
+        }),
 
   mode === "create"
     ? check("description")
