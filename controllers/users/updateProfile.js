@@ -3,13 +3,12 @@ import bcrypt from "bcryptjs";
 import { uploadImg } from "../../utilities/imageHandler.js";
 import { sendVerificationEmail, sendNotificationEmail } from "../../middlewares/emailVerification.js";
 import crypto from "crypto";
-import asyncWrapper from "../../middlewares/asyncWrapper.js";
 
-const updateProfile = asyncWrapper(async (req, res) => {
+const updateProfile = async (req, res) => {
   const userId = req.user.id;
   const {
-    firstName,
-    lastName,
+    firstname,
+    lastname,
     email,
     gender,
     address,
@@ -31,8 +30,8 @@ const updateProfile = asyncWrapper(async (req, res) => {
 
 
   // Update profile fields
-  
-  if (firstName && lastName) user.name = firstName + " " + lastName;
+
+  if (firstname && lastname) user.name = firstname + " " + lastname;
   if (email && email.toLowerCase() !== user.email) {
     emailChanged = true;
     user.email = email.toLowerCase();
@@ -81,14 +80,14 @@ const updateProfile = asyncWrapper(async (req, res) => {
     success: true,
     status: 200,
     data: {
-      firstName: updatedFirstName,
-      lastName: updatedLastName,
+      firstname: updatedFirstName,
+      lastname: updatedLastName,
       email: user.email,
       address: user.address,
       gender: user.gender,
       image: user.image,
     },
   });
-});
+};
 
 export default updateProfile;

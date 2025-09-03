@@ -27,7 +27,7 @@ export const login = async (req, res) => {
   }
  
   if (!user.isVerified){
-        res.status()
+        res.status(401).json({status:401,success:FAIL, message: "not verified" })
   }
   const token = await generateToken({
     id: user._id,

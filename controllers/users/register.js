@@ -1,6 +1,5 @@
 import { User } from "../../models/userModel.js";
 import { SUCCESS, FAIL } from "../../utilities/successWords.js";
-import generateToken from "../../utilities/generateJWT.js";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import crypto from "crypto";
@@ -40,12 +39,7 @@ export const register = async (req, res) => {
 
   await newUser.save();
 
-  const token = await generateToken({
-    id: newUser._id,
-    role: newUser.role,
-  });
 
-  
 try {
   await sendVerificationEmail(email, newUser.verificationToken);
 } catch (err) {
@@ -61,8 +55,6 @@ try {
     success: SUCCESS,
     message: "User created, verification email sent!",
     data: {
-      token,
-      role: newUser.role,
       verificationToken: newUser.verificationToken
     }
   });
