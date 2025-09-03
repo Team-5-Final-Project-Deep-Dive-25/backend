@@ -15,7 +15,7 @@ const getOne = async (req, res) => {
   const category = await Category.findOne(
     { _id: id, deleted_at: null },
     { __v: 0, updatedAt: 0, deleted_at: 0 }
-  );
+  ).populate("discountId", "-__v -updatedAt -createdAt -deleted_at -productId -categoryId");
   if (!category) {
     return res.status(404).json({
       success: FAIL,

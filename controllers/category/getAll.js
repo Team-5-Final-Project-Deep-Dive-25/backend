@@ -11,7 +11,11 @@ export const getAll = async (req, res) => {
     { __v: 0, updatedAt: 0, deleted_at: 0 }
   )
     .skip(skip)
-    .limit(limit);
+    .limit(limit)
+    .populate(
+      "discountId",
+      "-__v -updatedAt -createdAt -deleted_at -productId -categoryId"
+    );
   const total = await Category.countDocuments({ deleted_at: null });
 
   if (!categories || categories.length === 0) {
