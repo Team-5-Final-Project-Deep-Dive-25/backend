@@ -25,6 +25,7 @@ export const getProfile = asyncWrapper(async (req, res) => {
       lastName,
       email: user.email,
       address: user.address,
+      gender: user.gender,
       image: user.image,
     },
   });
