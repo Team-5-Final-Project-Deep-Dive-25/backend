@@ -15,6 +15,7 @@ import deleteOne from "../controllers/users/admin/deleteOne.js";
 import { getProfile } from "../controllers/users/getProfile.js";
 import updateProfile from "../controllers/users/updateProfile.js";
 import { normalizeProductImages } from "../controllers/validation/product.js";
+import { verifyEmail } from "../controllers/users/verifyEmail.js";
 import multer from "multer";
 const userRouter = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -61,5 +62,7 @@ userRouter.delete(
   asyncWrapper(deleteOne)
 );
 userRouter.delete("/", protect, asyncWrapper(deleteAccount));
+
+userRouter.get("/verify", asyncWrapper(verifyEmail));
 
 export default userRouter;

@@ -1,11 +1,14 @@
 import { User } from "../../models/userModel.js";
 import { SUCCESS, FAIL } from "../../utilities/successWords.js";
-import generateToken from "../../utilities/generateJWT.js";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
+import crypto from "crypto";
+import { sendVerificationEmail } from "../../middlewares/emailVerification.js";
+
 dotenv.config();
 
 export const register = async (req, res) => {
+
   const { name, email, password, gender, address } = req.body;
 
   const olduser = await User.findOne({ email: req.body.email.toLowerCase() });
@@ -30,21 +33,29 @@ export const register = async (req, res) => {
     gender: gender.toUpperCase(),
     address,
     image,
+    isVerified: false,
+    verificationToken: crypto.randomBytes(32).toString("hex")
   });
+
   await newUser.save();
 
-  const token = await generateToken({
-    id: newUser._id,
-    role: newUser.role,
-  });
 
-  return res.status(201).json({
+try {
+  await sendVerificationEmail(email, newUser.verificationToken);
+} catch (err) {
+  console.error("Email sending error:", err);
+  return res.status(500).json({
+    status: 500,
+    success: FAIL,
+    message: err.message || "Email sending failed",
+  });
+}
+  res.status(201).json({
     status: 201,
     success: SUCCESS,
-    message: "User Registered Successfully",
+    message: "User created, verification email sent!",
     data: {
-      token,
-      role: newUser.role,
-    },
+      verificationToken: newUser.verificationToken
+    }
   });
 };
