@@ -1,19 +1,22 @@
 import { User } from "../../models/userModel.js";
 import bcrypt from "bcryptjs";
 import { uploadImg } from "../../utilities/imageHandler.js";
+import { sendVerificationEmail, sendNotificationEmail } from "../../middlewares/emailVerification.js";
+import crypto from "crypto";
+import asyncWrapper from "../../middlewares/asyncWrapper.js";
 
-
-const updateProfile = async (req, res) => {
+const updateProfile = asyncWrapper(async (req, res) => {
   const userId = req.user.id;
   const {
-    firstname,
-    lastname,
+    firstName,
+    lastName,
     email,
     gender,
     address,
     oldPassword,
     newPassword,
   } = req.body;
+
 
   const user = await User.findOne({ _id: userId, deleted_at: null });
   if (!user) {
@@ -24,12 +27,22 @@ const updateProfile = async (req, res) => {
     });
   }
 
+  let emailChanged = false;
+
+
   // Update profile fields
-  if (firstname && lastname) user.name = firstname + " " + lastname;
-  if (email) user.email = email.toLowerCase();
+  
+  if (firstName && lastName) user.name = firstName + " " + lastName;
+  if (email && email.toLowerCase() !== user.email) {
+    emailChanged = true;
+    user.email = email.toLowerCase();
+    user.isVerified = false;
+    user.verificationToken = crypto.randomBytes(32).toString("hex");
+  }
   if (gender) user.gender = gender.toUpperCase();
   if (address) user.address = address;
   if (req.file) user.image = (await uploadImg(req.file)).ImgUrl;
+
 
   // Handle password change
   if (oldPassword && newPassword) {
@@ -41,31 +54,41 @@ const updateProfile = async (req, res) => {
         message: "Old password is incorrect",
       });
     }
-    user.password = await bcrypt.hash(newPassword, 15);
+    user.password = await bcrypt.hash(newPassword, 10);
   }
 
   await user.save();
 
+
+  // Send email
+  if (emailChanged) {
+    await sendVerificationEmail(user.email, user.verificationToken);
+  } else {
+    await sendNotificationEmail(user.email, "Your profile information has been updated.");
+  }
+
+
   // Split name for response
-  let firstName = "";
-  let lastName = "";
+  let updatedFirstName = "";
+  let updatedLastName = "";
   if (user.name) {
-    const nameParts = user.name.split(" ");
-    firstName = nameParts[0] || "";
-    lastName = nameParts.slice(1).join(" ") || "";
+    const parts = user.name.split(" ");
+    updatedFirstName = parts[0] || "";
+    updatedLastName = parts.slice(1).join(" ") || "";
   }
 
   return res.status(200).json({
     success: true,
     status: 200,
     data: {
-      firstName,
-      lastName,
+      firstName: updatedFirstName,
+      lastName: updatedLastName,
       email: user.email,
       address: user.address,
       gender: user.gender,
       image: user.image,
     },
   });
-};
+});
+
 export default updateProfile;
