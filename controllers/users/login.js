@@ -16,20 +16,25 @@ export const login = async (req, res) => {
   if (!user) {
     return res
       .status(401)
-      .json({ status: 401, success: FAIL, message: "invalid credentials" });
+      .json({ status: 401, success: FAIL, message: "invalid Email" });
   }
 
   const matchedPassword = await bcrypt.compare(password, user.password);
   if (!matchedPassword) {
     return res
       .status(401)
-      .json({ status: 401, success: FAIL, message: "invalid credentials" });
+      .json({ status: 401, success: FAIL, message: "invalid password" });
   }
-
+ 
+  if (!user.isVerified){
+        res.status()
+  }
   const token = await generateToken({
     id: user._id,
     role: user.role,
   });
+
+
   return res.status(200).json({
     status: 200,
     success: SUCCESS,

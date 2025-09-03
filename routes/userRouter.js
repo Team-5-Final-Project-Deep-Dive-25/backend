@@ -13,6 +13,7 @@ import { changeRole } from "../controllers/users/admin/changeRole.js";
 import { getProfile } from "../controllers/users/getProfile.js";
 import updateProfile from "../controllers/users/updateProfile.js";
 import { normalizeProductImages } from "../controllers/validation/product.js";
+import { verifyEmail } from "../controllers/users/verifyEmail.js";
 import multer from "multer";
 const userRouter = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -52,5 +53,7 @@ userRouter.put(
   normalizeProductImages,
   asyncWrapper(updateProfile)
 );
+
+userRouter.get("/verify", asyncWrapper(verifyEmail));
 
 export default userRouter;

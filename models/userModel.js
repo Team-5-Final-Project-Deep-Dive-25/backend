@@ -57,6 +57,8 @@ const userSchema = new mongoose.Schema(
       default:
         "https://res.cloudinary.com/dweffiohi/image/upload/v1756798194/kxd3fv4kuoiozsglw1ry.jpg",
     },
+    isVerified: { type: Boolean, default: false },
+    verificationToken: { type: String },
   },
   { timestamps: true }
 );

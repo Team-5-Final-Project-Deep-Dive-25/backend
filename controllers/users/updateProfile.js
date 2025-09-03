@@ -1,6 +1,7 @@
 import { User } from "../../models/userModel.js";
 import bcrypt from "bcryptjs";
 
+
 const updateProfile = async (req, res) => {
   const userId = req.user.id;
   const {
