@@ -10,6 +10,7 @@ import getOne from "../controllers/products/getOne.js";
 import updateOne from "../controllers/products/update.js";
 import deleteOne from "../controllers/products/delete.js";
 import { deleteProductImages } from "../controllers/products/deleteImages.js";
+import { getByCategory } from "../controllers/products/getByCategory.js";
 import asyncWrapper from "../middlewares/asyncWrapper.js";
 import { protect } from "../middlewares/auth.js";
 import { authorizeRoles } from "../middlewares/authrole.js";
@@ -21,6 +22,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 router.get("/", asyncWrapper(getAll));
 router.get("/:id", asyncWrapper(getOne));
+router.get("/category/:id", asyncWrapper(getByCategory));
 router.post(
   "/",
   protect,
