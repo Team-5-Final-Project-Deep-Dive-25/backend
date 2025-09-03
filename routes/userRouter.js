@@ -3,6 +3,7 @@ import { getAllUsers } from "../controllers/users/admin/getAll.js";
 import { getUsersIds } from "../controllers/users/admin/usersIds.js";
 import { login } from "../controllers/users/login.js";
 import { register } from "../controllers/users/register.js";
+import deleteAccount from "../controllers/users/deleteAccount.js";
 import { protect } from "../middlewares/auth.js";
 import { authorizeRoles } from "../middlewares/authrole.js";
 import userRoles from "../utilities/userRoles.js";
@@ -10,6 +11,7 @@ import asyncWrapper from "../middlewares/asyncWrapper.js";
 import { registerValidation } from "../controllers/validation/register.js";
 import { loginValidation } from "../controllers/validation/login.js";
 import { changeRole } from "../controllers/users/admin/changeRole.js";
+import deleteOne from "../controllers/users/admin/deleteOne.js";
 import { getProfile } from "../controllers/users/getProfile.js";
 import updateProfile from "../controllers/users/updateProfile.js";
 import { normalizeProductImages } from "../controllers/validation/product.js";
@@ -53,6 +55,13 @@ userRouter.put(
   normalizeProductImages,
   asyncWrapper(updateProfile)
 );
+userRouter.delete(
+  "/:id",
+  protect,
+  authorizeRoles(userRoles.ADMIN),
+  asyncWrapper(deleteOne)
+);
+userRouter.delete("/", protect, asyncWrapper(deleteAccount));
 
 userRouter.get("/verify", asyncWrapper(verifyEmail));
 

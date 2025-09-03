@@ -19,7 +19,7 @@ export const getOne = async (req, res) => {
       deleted_at: 0,
     }
   )
-    .populate("categortyId", "-__v -createdAt -updatedAt -deleted_at")
+    .populate("categoryId", "-__v -createdAt -updatedAt -deleted_at")
     .populate(
       "discountId",
       "-productId -categoryId -__v -createdAt -updatedAt -deleted_at"
