@@ -9,7 +9,7 @@ export const getAll = async (req, res) => {
   // Build filter object
   const filter = { deleted_at: null };
   if (req.query.category) {
-    filter.categortyId = req.query.category;
+    filter.categoryId = req.query.category;
   }
 
   const products = await Product.find(filter, {
@@ -19,7 +19,7 @@ export const getAll = async (req, res) => {
     deleted_at: 0,
   })
     .populate({
-      path: "categortyId",
+      path: "categoryId",
       select: "-__v -updatedAt -createdAt -deleted_at",
     })
     .populate({

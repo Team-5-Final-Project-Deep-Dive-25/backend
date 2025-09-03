@@ -6,7 +6,6 @@ export const getProfile = asyncWrapper(async (req, res) => {
   const userId = req.user.id;
   const user = await User.findById(userId);
 
-
   if (!user) {
     return res.status(404).json({
       success: false,
@@ -25,12 +24,8 @@ export const getProfile = asyncWrapper(async (req, res) => {
       firstName,
       lastName,
       email: user.email,
-      address: user.address
-    
-
-  },
+      address: user.address,
+      image: user.image,
+    },
   });
 });
-
-    
-

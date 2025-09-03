@@ -12,11 +12,11 @@ export const login = async (req, res) => {
       message: "email and password are required",
     });
   }
-  const user = await User.findOne({ email: email });
+  const user = await User.findOne({ email: email, deleted_at: null });
   if (!user) {
     return res
       .status(401)
-      .json({ status: 401, success: FAIL, message: "invalid credentials" });
+      .json({ status: 404, success: FAIL, message: "User not found" });
   }
 
   const matchedPassword = await bcrypt.compare(password, user.password);

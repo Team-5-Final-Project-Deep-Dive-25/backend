@@ -12,7 +12,7 @@ const productSchema = new mongoose.Schema(
     description: { type: String, required: true, minlength: 5, maxlength: 150 },
     price: { type: Number, required: true },
     stock: { type: Number, required: true },
-    categortyId: {
+    categoryId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       default: null,
