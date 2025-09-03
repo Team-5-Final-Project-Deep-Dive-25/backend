@@ -21,10 +21,15 @@ export const getAll = async (req, res) => {
     .populate({
       path: "categoryId",
       select: "-__v -updatedAt -createdAt -deleted_at",
+      populate: {
+        path: "discountId",
+        select: "-__v -updatedAt -createdAt -deleted_at -categoryId -productId",
+      },
     })
+
     .populate({
       path: "discountId",
-      select: "endDate value type",
+      select: "-productId -categoryId -__v -createdAt -updatedAt -deleted_at",
     })
     .skip(skip)
     .limit(limit);
