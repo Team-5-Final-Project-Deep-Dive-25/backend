@@ -1,4 +1,5 @@
 import Cart from "../../models/cartModel.js";
+import { Product } from "../../models/productModel.js";
 import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 
 const add = async (req, res) => {
@@ -25,6 +26,10 @@ const add = async (req, res) => {
       (p) => p.productID.toString() === productID
     );
 
+    const product = await Product.findById(productID);
+    product.stock -= quantity;
+    await product.save();
+
     if (existingProduct) {
       existingProduct.quantity += quantity || 1;
     } else {
@@ -37,7 +42,7 @@ const add = async (req, res) => {
   return res.status(201).json({
     success: SUCCESS,
     status: 201,
-    message: "Cart Created Successfully",
+    message: "Add to Cart Successfully",
     data: cart,
   });
 };

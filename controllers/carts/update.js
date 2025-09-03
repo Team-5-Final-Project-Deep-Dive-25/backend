@@ -3,39 +3,31 @@ import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 
 const updateOne = async (req, res) => {
   const buyerID = req.user.id;
-  const { quantity, productID } = req.body;
+  const { productID } = req.body;
 
-  const item = await Cart.findOne({ buyerID });
-  if (!item) {
+  const result = await Cart.findOneAndUpdate(
+    { buyerID, "products.productID": productID },
+    { $inc: { "products.$.quantity": -1 } },
+    { new: true }
+  );
+
+  if (!result) {
     return res.status(404).json({
       success: FAIL,
       status: 404,
-      message: "Cart is not found",
+      message: "Cart or product not found",
     });
   }
 
-  if (!quantity) {
-    const q = Number(quantity);
-    if (!Number.isFinite(q) || q < 1) {
-      return res.status(400).json({
-        success: FAIL,
-        status: 400,
-        message: "Quantity must be a number and at least 1",
-      });
-    }
-  }
-
-  if (productID) {
-    item.products.push({ productID, quantity });
-  }
-
-  await item.save();
+  await Cart.updateOne(
+    { buyerID },
+    { $pull: { products: { productID, quantity: { $lte: 0 } } } }
+  );
 
   return res.status(200).json({
     success: SUCCESS,
     status: 200,
-    message: "Cart updated Successfully",
-    data: item,
+    message: "Cart updated successfully",
   });
 };
 
