@@ -1,13 +1,15 @@
 import SibApiV3Sdk from "@sendinblue/client";
+import dotenv from "dotenv";
+dotenv.config();
 
 const client = new SibApiV3Sdk.TransactionalEmailsApi();
 client.setApiKey(
   SibApiV3Sdk.TransactionalEmailsApiApiKeys.apiKey,
   process.env.BREVO_API_KEY
 );
-
+const baseUrl = process.env.BASE_URL;
 export const sendVerificationEmail = async (toEmail, token) => {
-  const verificationLink = `http://localhost:${process.env.PORT}/api/users/verify?token=${token}`;
+  const verificationLink = `${baseUrl}/api/users/verify?token=${token}`;
   try {
     return await client.sendTransacEmail({
       sender: {
