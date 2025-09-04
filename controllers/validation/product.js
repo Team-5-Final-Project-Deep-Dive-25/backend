@@ -160,32 +160,30 @@ export const productValidation = (mode = "create") => [
         }),
 
   mode === "create"
-    ? check("images")
-        .optional()
-        .custom((value, { req }) => {
-          // Support for images sent as array or file uploads
-          if (req.file || (Array.isArray(value) && value.length >= 1)) {
-            return true;
-          }
-          // If files are uploaded via multer with req.files
-          if (req.files && Array.isArray(req.files) && req.files.length >= 1) {
-            return true;
-          }
-          return Promise.reject("You must provide at least 1 images");
-        })
-    : check("images")
-        .optional()
-        .custom((value, { req }) => {
-          // No required image count when updating, just check valid format
-          if (
-            req.file ||
-            (Array.isArray(value) && value.length > 0) ||
-            (req.files && Array.isArray(req.files) && req.files.length > 0)
-          ) {
-            return true;
-          }
-          return true;
-        }),
+    ? check("images").optional()
+    : // .custom((value, { req }) => {
+      //   // Support for images sent as array or file uploads
+      //   if (req.file || (Array.isArray(value) && value.length >= 1)) {
+      //     return true;
+      //   }
+      //   // If files are uploaded via multer with req.files
+      //   if (req.files && Array.isArray(req.files) && req.files.length >= 1) {
+      //     return true;
+      //   }
+      //   return Promise.reject("You must provide at least 1 images");
+      // })
+      check("images").optional(),
+  // .custom((value, { req }) => {
+  //   // No required image count when updating, just check valid format
+  //   if (
+  //     req.file ||
+  //     (Array.isArray(value) && value.length > 0) ||
+  //     (req.files && Array.isArray(req.files) && req.files.length > 0)
+  //   ) {
+  //     return true;
+  //   }
+  //   return true;
+  // }),
 ];
 
 export const handleProductValidation = (req, res, next) => {
