@@ -9,7 +9,7 @@ const productSchema = new mongoose.Schema(
       maxlength: 40,
       unique: true,
     },
-    description: { type: String, required: true, minlength: 5, maxlength: 150 },
+    description: { type: String, required: true, minlength: 5, maxlength: 500 },
     price: { type: Number, required: true },
     stock: { type: Number, required: true },
     categoryId: {

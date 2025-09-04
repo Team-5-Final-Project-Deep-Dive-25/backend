@@ -2,10 +2,13 @@ import { Wishlist } from "../../models/wishlistModel.js";
 import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 export const getOne = async (req, res) => {
   const userId = req.user.id;
-  const wishlist = await Wishlist.findOne({
-    userId,
-    deleted_at: null,
-  }).populate("productId");
+  const wishlist = await Wishlist.findOne(
+    {
+      userId,
+      deleted_at: null,
+    },
+    { __v: 0, updatedAt: 0, deleted_at: 0 }
+  ).populate("productId");
   if (!wishlist) {
     return res
       .status(404)
