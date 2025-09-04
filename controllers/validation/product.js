@@ -161,8 +161,7 @@ export const productValidation = (mode = "create") => [
 
   mode === "create"
     ? check("images")
-        .exists()
-        .withMessage("images are required")
+        .optional()
         .custom((value, { req }) => {
           // Support for images sent as array or file uploads
           if (req.file || (Array.isArray(value) && value.length >= 1)) {

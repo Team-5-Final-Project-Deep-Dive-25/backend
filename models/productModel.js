@@ -23,7 +23,7 @@ const productSchema = new mongoose.Schema(
       default: null,
     },
     rate: { type: Number, default: 1, max: 5 },
-    images: [{ type: String, required: true }],
+    images: [{ type: String }],
     deleted_at: { type: Date, default: null },
   },
   { timestamps: true }
