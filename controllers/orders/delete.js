@@ -23,6 +23,9 @@ const deleteOne = async (req, res) => {
       message: "This Order is on progress now",
     });
   }
+  if (req.user.role === "USER") {
+    order.status = "canceled";
+  }
   order.deleted_at = new Date();
   await order.save();
   return res.status(200).json({

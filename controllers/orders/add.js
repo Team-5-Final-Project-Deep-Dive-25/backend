@@ -61,7 +61,6 @@ const add = async (req, res) => {
         discountedPrice = Math.max(0, price - discount.value); // e.g., $10 off
       }
     }
-
     totalPrice += price * quantity;
     totalPriceAfterDiscount += discountedPrice * quantity;
   }
@@ -71,7 +70,8 @@ const add = async (req, res) => {
     buyerID,
     cartID: cart._id,
     status: status || "pending",
-    totalPrice: totalPriceAfterDiscount, // before discount
+    totalPriceAfterDiscount: totalPriceAfterDiscount,
+    totalPrice: totalPrice,
     address: userAddress.address,
   });
 
@@ -83,7 +83,7 @@ const add = async (req, res) => {
       await product.save();
     }
   }
-
+  await Cart.findOneAndDelete(buyerID);
   return res.status(201).json({
     status: 201,
     success: SUCCESS,

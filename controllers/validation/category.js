@@ -38,7 +38,7 @@ export const categoryValidation = (mode = "create") => [
         .isString()
         .withMessage("description must be a string")
         .isLength({ min: 4, max: 150 })
-        .withMessage("description must be between 3 and 40 characters")
+        .withMessage("description must be between 3 and 150 characters")
     : check("description")
         .optional()
         .isString()

@@ -22,6 +22,11 @@ const orderSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
+    totalPriceAfterDiscount: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
     address: {
       type: String,
       required: true,
