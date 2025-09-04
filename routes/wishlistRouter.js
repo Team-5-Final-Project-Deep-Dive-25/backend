@@ -14,7 +14,7 @@ const router = express.Router();
 router.get("/", protect, authorizeRoles(userRoles.USER), asyncWrapper(getOne));
 router.post("/", protect, authorizeRoles(userRoles.USER), asyncWrapper(add));
 router.delete(
-  "/",
+  "/:id",
   protect,
   authorizeRoles(userRoles.USER),
   asyncWrapper(removeItem)

@@ -2,7 +2,7 @@ import { Wishlist } from "../../models/wishlistModel.js";
 import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 export const removeItem = async (req, res) => {
   const userId = req.user.id;
-  const { productId } = req.body;
+  const { productId } = req.params;
   if (!productId) {
     return res
       .status(400)
