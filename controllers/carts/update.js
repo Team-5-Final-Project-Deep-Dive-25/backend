@@ -1,5 +1,7 @@
 import Cart from "../../models/cartModel.js";
+import { Product } from "../../models/productModel.js";
 import { SUCCESS, FAIL } from "../../utilities/successWords.js";
+import mongoose from "mongoose";
 
 const updateOne = async (req, res) => {
   const buyerID = req.user.id;
@@ -10,6 +12,8 @@ const updateOne = async (req, res) => {
     { $inc: { "products.$.quantity": -1 } },
     { new: true }
   );
+  let id = new mongoose.Types.ObjectId(productID);
+  await Product.findOneAndUpdate({ _id: id }, { $inc: { stock: 1 } });
 
   if (!result) {
     return res.status(404).json({

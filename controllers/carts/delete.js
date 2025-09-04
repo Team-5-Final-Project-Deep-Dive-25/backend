@@ -1,33 +1,38 @@
 import Cart from "../../models/cartModel.js";
 import { SUCCESS, FAIL } from "../../utilities/successWords.js";
+import mongoose from "mongoose";
 
 const deleteOne = async (req, res) => {
-  const { id } = req.params;
   const buyerID = req.user.id;
+  const { productID } = req.params; // productID to remove
 
-  const item = await Cart.findById(id);
-  if (!item) {
+  if (!mongoose.Types.ObjectId.isValid(productID)) {
+    return res.status(400).json({
+      success: FAIL,
+      status: 400,
+      message: "Invalid product ID",
+    });
+  }
+
+  const result = await Cart.findOneAndUpdate(
+    { buyerID },
+    { $pull: { products: { productID: productID } } },
+    { new: true }
+  );
+
+  if (!result) {
     return res.status(404).json({
       success: FAIL,
       status: 404,
-      message: "Cart item not found",
+      message: "Cart or product not found",
     });
   }
-
-  if (item.buyerID.toString() !== buyerID) {
-    return res.status(403).json({
-      success: FAIL,
-      status: 403,
-      message: "Not authorized to delete this cart item",
-    });
-  }
-
-  await item.deleteOne();
 
   return res.status(200).json({
     success: SUCCESS,
     status: 200,
-    message: "Cart Deleted Successfully",
+    message: "Product removed from cart successfully",
+    cart: result,
   });
 };
 

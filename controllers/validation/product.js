@@ -50,7 +50,7 @@ export const productValidation = (mode = "create") => [
         .notEmpty()
         .withMessage("description cannot be empty")
         .isLength({ min: 5, max: 500 })
-        .withMessage("description must be between 5 and 150 characters")
+        .withMessage("description must be between 5 and 500 characters")
     : check("description")
         .optional()
         .isString()
@@ -58,7 +58,7 @@ export const productValidation = (mode = "create") => [
         .notEmpty()
         .withMessage("description cannot be empty")
         .isLength({ min: 5, max: 500 })
-        .withMessage("description must be between 5 and 150 characters"),
+        .withMessage("description must be between 5 and 500 characters"),
 
   mode === "create"
     ? check("price")

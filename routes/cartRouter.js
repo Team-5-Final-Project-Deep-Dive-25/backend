@@ -35,7 +35,7 @@ router.put(
   asyncWrapper(updateOne)
 );
 router.delete(
-  "/:id",
+  "/:productID",
   protect,
   authorizeRoles(userRoles.USER),
   asyncWrapper(deleteOne)
