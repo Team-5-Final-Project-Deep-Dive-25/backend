@@ -13,7 +13,7 @@ const router = express.Router();
 // router.get("/", protect, authorizeRoles(userRoles.USER), asyncWrapper(getAll));
 router.get("/", protect, authorizeRoles(userRoles.USER), asyncWrapper(getOne));
 router.post("/", protect, authorizeRoles(userRoles.USER), asyncWrapper(add));
-router.put(
+router.delete(
   "/",
   protect,
   authorizeRoles(userRoles.USER),
