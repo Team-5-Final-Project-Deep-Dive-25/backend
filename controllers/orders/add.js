@@ -1,7 +1,6 @@
 import Cart from "../../models/cartModel.js";
 import Order from "../../models/orderModel.js";
 import { User } from "../../models/userModel.js";
-import { Product } from "../../models/productModel.js";
 import { Discount } from "../../models/discountModel.js";
 import { Category } from "../../models/categoryModel.js";
 import { SUCCESS, FAIL } from "../../utilities/successWords.js";

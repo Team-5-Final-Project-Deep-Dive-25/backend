@@ -1,4 +1,5 @@
 import { Category } from "../../models/categoryModel.js";
+import { Product } from "../../models/productModel.js";
 import { FAIL, SUCCESS } from "../../utilities/successWords.js";
 import mongoose from "mongoose";
 const deleteOne = async (req, res) => {
@@ -22,6 +23,16 @@ const deleteOne = async (req, res) => {
       message: "Category is not found",
     });
   }
+  const categoryRelatedProducts = await Product.find({
+    categoryId: id,
+    deleted_at: null,
+  });
+
+  for (const product of categoryRelatedProducts) {
+    product.categoryId = null;
+    await product.save();
+  }
+
   return res.status(200).json({
     success: SUCCESS,
     status: 200,
