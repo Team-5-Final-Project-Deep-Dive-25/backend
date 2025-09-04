@@ -165,14 +165,14 @@ export const productValidation = (mode = "create") => [
         .withMessage("images are required")
         .custom((value, { req }) => {
           // Support for images sent as array or file uploads
-          if (req.file || (Array.isArray(value) && value.length >= 3)) {
+          if (req.file || (Array.isArray(value) && value.length >= 1)) {
             return true;
           }
           // If files are uploaded via multer with req.files
-          if (req.files && Array.isArray(req.files) && req.files.length >= 3) {
+          if (req.files && Array.isArray(req.files) && req.files.length >= 1) {
             return true;
           }
-          return Promise.reject("You must provide at least 3 images");
+          return Promise.reject("You must provide at least 1 images");
         })
     : check("images")
         .optional()
