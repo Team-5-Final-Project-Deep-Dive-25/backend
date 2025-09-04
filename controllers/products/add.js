@@ -13,6 +13,9 @@ export const add = async (req, res) => {
     const imgResult = await uploadImg(req.file);
     images.push(imgResult.ImgUrl);
   }
+  if (req.body.images) {
+    images = req.body.images;
+  }
   const product = new Product({ ...req.body, images });
   await product.save();
   return res.status(201).json({
