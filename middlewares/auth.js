@@ -1,8 +1,20 @@
 import jwt from "jsonwebtoken";
 import { FAIL } from "../utilities/successWords.js";
+import { Black } from "../models/blacklist.js";
 
-export const protect = (req, res, next) => {
+export const protect = async (req, res, next) => {
   const authHeader = req.headers.authorization;
+  const tokean = authHeader.startsWith("Bearer ")
+    ? authHeader.slice(7)
+    : authHeader;
+  const tokenexists = await Black.findOne({ invalid: tokean });
+  if (!tokenexists) {
+    return res.status(401).json({
+      status: 401,
+      success: FAIL,
+      message: "Your token is not vaild any more",
+    });
+  }
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({
       status: 401,

@@ -17,6 +17,7 @@ import updateProfile from "../controllers/users/updateProfile.js";
 import { normalizeProductImages } from "../controllers/validation/product.js";
 import { verifyEmail } from "../controllers/users/verifyEmail.js";
 import { resend } from "../controllers/users/resend.js";
+import { add } from "../controllers/users/black.js";
 import multer from "multer";
 const userRouter = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -66,5 +67,6 @@ userRouter.delete("/", protect, asyncWrapper(deleteAccount));
 
 userRouter.get("/verify", asyncWrapper(verifyEmail));
 userRouter.get("/resend", asyncWrapper(resend));
+userRouter.post("/logout", asyncWrapper(add));
 
 export default userRouter;
