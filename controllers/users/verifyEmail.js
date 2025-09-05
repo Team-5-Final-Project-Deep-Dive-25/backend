@@ -4,7 +4,15 @@ import generateToken from "../../utilities/generateJWT.js";
 
 export const verifyEmail = async (req, res) => {
   const { token } = req.query;
-
+  const email = req.body.email;
+  const userVerify = await User.find({ email });
+  if (userVerify.isVerified === true) {
+    return res.status(400).json({
+      status: 400,
+      success: FAIL,
+      message: "This user is already verifyed",
+    });
+  }
   if (!token) {
     return res.status(400).json({
       status: 400,
