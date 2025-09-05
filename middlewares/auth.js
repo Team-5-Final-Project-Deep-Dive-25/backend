@@ -7,8 +7,10 @@ export const protect = async (req, res, next) => {
   const tokean = authHeader.startsWith("Bearer ")
     ? authHeader.slice(7)
     : authHeader;
+  console.log(tokean);
   const tokenexists = await Black.findOne({ invalid: tokean });
-  if (!tokenexists) {
+  console.log(tokenexists);
+  if (tokenexists) {
     return res.status(401).json({
       status: 401,
       success: FAIL,
