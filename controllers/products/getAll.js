@@ -2,7 +2,7 @@ import { Product } from "../../models/productModel.js";
 import { FAIL, SUCCESS } from "../../utilities/successWords.js";
 import fetch from "node-fetch";
 
-export const getAll = async (req, res) => {
+const getAll = async (req, res) => {
   //   const page = parseInt(req.query.page) || 1;
   //   const limit = parseInt(req.query.limit) || 10;
   //   const skip = (page - 1) * limit;
