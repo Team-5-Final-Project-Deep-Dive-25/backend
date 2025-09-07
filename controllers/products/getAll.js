@@ -61,7 +61,7 @@ export const getAll = async (req, res) => {
   }
 };
 
-// export default getAll;
+export default getAll;
 
 // export const fetchData = async (req, res) => {
 //   try {
