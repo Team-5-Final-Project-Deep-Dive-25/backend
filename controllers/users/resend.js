@@ -3,6 +3,7 @@ import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 
 import crypto from "crypto";
 import { sendVerificationEmail } from "../../middlewares/emailVerification.js";
+import generateToken from "../../utilities/generateJWT.js";
 
 export const resend = async (req, res) => {
   const { email } = req.body;
@@ -14,7 +15,8 @@ export const resend = async (req, res) => {
       message: "This user is already verifyed",
     });
   }
-  const verificationTokenz = crypto.randomBytes(32).toString("hex");
+  // const verificationTokenz = crypto.randomBytes(32).toString("hex");
+  const verificationTokenz = await generateToken("tokenaa");
   userVerify.verificationToken = verificationTokenz;
   await userVerify.save();
   await sendVerificationEmail(email, verificationTokenz);
