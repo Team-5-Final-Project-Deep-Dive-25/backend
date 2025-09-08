@@ -39,7 +39,7 @@ const updateProfile = async (req, res) => {
     user.email = email.toLowerCase();
     user.isVerified = false;
     // user.verificationToken = crypto.randomBytes(32).toString("hex");
-    user.verificationToken = await generateToken("tokenaaa");
+    user.verificationToken = await generateToken({ tok: "ssd" });
   }
   if (gender) user.gender = gender.toUpperCase();
   if (address) user.address = address;

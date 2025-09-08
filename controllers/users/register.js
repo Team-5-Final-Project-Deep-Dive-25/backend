@@ -27,7 +27,7 @@ export const register = async (req, res) => {
       "https://res.cloudinary.com/dweffiohi/image/upload/v1756798194/kxd3fv4kuoiozsglw1ry.jpg";
   }
   // const verificationToken = crypto.randomBytes(32).toString("hex");
-  const verificationToken = await generateToken("tokenaa");
+  const verificationToken = await generateToken({ tok: "ssd" });
   const newUser = new User({
     name,
     email: email.toLowerCase(),

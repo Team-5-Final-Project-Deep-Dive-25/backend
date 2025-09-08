@@ -16,7 +16,7 @@ export const resend = async (req, res) => {
     });
   }
   // const verificationTokenz = crypto.randomBytes(32).toString("hex");
-  const verificationTokenz = await generateToken("tokenaa");
+  const verificationTokenz = await generateToken({ tok: "ssd" });
   userVerify.verificationToken = verificationTokenz;
   await userVerify.save();
   await sendVerificationEmail(email, verificationTokenz);
