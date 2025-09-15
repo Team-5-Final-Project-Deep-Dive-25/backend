@@ -38,7 +38,7 @@ export const updateOne = async (req, res) => {
     const img = await uploadImg(req.file);
     newImages.push(img.ImgUr);
   }
-  updateData.images = [...(product.images || []), ...newImages];
+  // updateData.images = [...(product.images || []), ...newImages];
 
   const updatedProduct = await Product.findOneAndUpdate(
     { _id: id, deleted_at: null },
