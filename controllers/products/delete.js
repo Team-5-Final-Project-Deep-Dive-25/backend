@@ -20,11 +20,11 @@ export const deleteOne = async (req, res) => {
       message: "Product not found",
     });
   }
-  if (product.images && product.images.length > 0) {
-    for (const img of product.images) {
-      await deleteImg(img);
-    }
-  }
+  // if (product.images && product.images.length > 0) {
+  //   for (const img of product.images) {
+  //     await deleteImg(img);
+  //   }
+  // }
   await Product.findOneAndUpdate(
     { _id: id, deleted_at: null },
     { deleted_at: new Date() },
