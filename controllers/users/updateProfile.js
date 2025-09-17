@@ -4,8 +4,7 @@ import { uploadImg } from "../../utilities/imageHandler.js";
 import {
   sendVerificationEmail,
   sendNotificationEmail,
-} from "../../middlewares/emailVerification.js";
-import crypto from "crypto";
+} from "../../utilities/emailVerification.js";
 import generateToken from "../../utilities/generateJWT.js";
 
 const updateProfile = async (req, res) => {

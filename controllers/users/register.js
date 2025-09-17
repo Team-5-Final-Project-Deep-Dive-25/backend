@@ -3,7 +3,7 @@ import { SUCCESS, FAIL } from "../../utilities/successWords.js";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import crypto from "crypto";
-import { sendVerificationEmail } from "../../middlewares/emailVerification.js";
+import { sendVerificationEmail } from "../../utilities/emailVerification.js";
 import generateToken from "../../utilities/generateJWT.js";
 
 dotenv.config();
