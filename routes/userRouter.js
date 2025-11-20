@@ -19,6 +19,7 @@ import { verifyEmail } from "../controllers/users/verifyEmail.js";
 import { resend } from "../controllers/users/resend.js";
 import { add } from "../controllers/users/black.js";
 import multer from "multer";
+
 const userRouter = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
