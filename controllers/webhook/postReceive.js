@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-import axios from "axios";
 dotenv.config();
 
 const token = process.env.WHATSAPP_TOKEN;
@@ -27,20 +26,6 @@ const postReceive = async (req, res) => {
     console.log("phone number", phoneNumberId);
     console.log("from", from);
     console.log("body", msg_body);
-
-    await axios.post(
-      `https://graph.facebook.com/v24.0/${phoneNumberId}/messages?access_token=${token}`,
-      {
-        messaging_product: "whatsapp",
-        to: from,
-        text: {
-          body: `Hi.. I'm Khaled, your message is: ${msg_body}`,
-        },
-      },
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
 
     return res.sendStatus(200);
   } catch (error) {
