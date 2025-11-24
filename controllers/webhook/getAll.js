@@ -6,6 +6,7 @@ const storeWebhookData = async (req, res) => {
     const body = req.body;
 
     if (!body?.object) {
+j      console.log("Invalid webhook payload - no object");
       return res.status(400).json({
         success: false,
         message: "Invalid webhook payload",
@@ -18,6 +19,7 @@ const storeWebhookData = async (req, res) => {
     const message = value?.messages?.[0];
 
     if (!message) {
+      console.log("No message found in webhook");
       return res.status(400).json({
         success: false,
         message: "No message found in webhook",
@@ -29,10 +31,22 @@ const storeWebhookData = async (req, res) => {
     const msg_body = message.text?.body || "";
     const msg_id = message.id;
     const timestamp = message.timestamp;
-    const profile_name = message.from_name || null;
+
+    // Get profile name from contacts array
+    const contact = value?.contacts?.[0];
+    const profile_name = contact?.profile?.name || null;
 
     // Check for errors in the webhook
     const errors = value?.errors || [];
+
+    console.log("Extracting webhook data:", {
+      wa_id: from,
+      phone_number_id: phoneNumberId,
+      message_id: msg_id,
+      body: msg_body,
+      timestamp,
+      profile_name,
+    });
 
     // Create webhook document
     const webhookData = new Webhook({
@@ -50,16 +64,18 @@ const storeWebhookData = async (req, res) => {
       status: "received",
     });
 
-    await webhookData.save();
+    const savedData = await webhookData.save();
 
-    console.log("Webhook data stored successfully:", webhookData._id);
+    console.log("Webhook data stored successfully:", savedData._id);
     return res.status(200).json({
       success: true,
       message: "Webhook data stored successfully",
-      data: webhookData,
+      data: savedData,
     });
   } catch (error) {
-    console.error("Error storing webhook data:", error.message);
+    console.error("Error storing webhook data:", error);
+    console.error("Error message:", error.message);
+    console.error("Error stack:", error.stack);
     return res.status(500).json({
       success: false,
       message: "Error storing webhook data",
