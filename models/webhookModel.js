@@ -6,11 +6,11 @@ const webhookSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    phone_number_id: {
+    receiver_phone_id: {
       type: String,
       trim: true,
     },
-    number: {
+    sender_phone_id: {
       type: String,
       trim: true,
     },

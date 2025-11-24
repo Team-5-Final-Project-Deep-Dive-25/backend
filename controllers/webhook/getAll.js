@@ -51,7 +51,7 @@ const storeWebhookData = async (req, res) => {
 
     console.log("✅ Extracted webhook data:", {
       wa_id: from,
-      phone_number_id: phoneNumberId,
+      receiver_phone_id: phoneNumberId,
       message_id: msg_id,
       body: msg_body,
       timestamp,
@@ -61,8 +61,8 @@ const storeWebhookData = async (req, res) => {
     // Create webhook document
     const webhookData = new Webhook({
       wa_id: from,
-      phone_number_id: phoneNumberId || "",
-      number: from,
+      receiver_phone_id: phoneNumberId || "",
+      sender_phone_id: from,
       conversation_id: value?.conversation_id || null,
       message_id: msg_id,
       body: msg_body,
@@ -105,7 +105,8 @@ const getAllWebhookData = async (req, res) => {
       limit = 10,
       page = 1,
       wa_id,
-      phone_number_id,
+      receiver_phone_id,
+      sender_phone_id,
       sortBy = "createdAt",
       order = "desc",
     } = req.query;
@@ -119,8 +120,12 @@ const getAllWebhookData = async (req, res) => {
       filter.wa_id = wa_id;
     }
 
-    if (phone_number_id) {
-      filter.phone_number_id = phone_number_id;
+    if (receiver_phone_id) {
+      filter.receiver_phone_id = receiver_phone_id;
+    }
+
+    if (sender_phone_id) {
+      filter.sender_phone_id = sender_phone_id;
     }
 
     // Calculate pagination
