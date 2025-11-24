@@ -43,7 +43,7 @@ const webhookSchema = new mongoose.Schema(
       enum: ["sent", "delivered", "read", "failed"],
       default: "received",
     },
-    errors: [
+    webhook_errors: [
       {
         code: {
           type: Number,

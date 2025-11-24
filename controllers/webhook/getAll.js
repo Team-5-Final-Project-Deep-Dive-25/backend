@@ -47,7 +47,7 @@ const storeWebhookData = async (req, res) => {
     const profile_name = contact?.profile?.name || null;
 
     // Check for errors in the webhook
-    const errors = value?.errors || [];
+    const webhook_errors = value?.errors || [];
 
     console.log("✅ Extracted webhook data:", {
       wa_id: from,
@@ -69,7 +69,7 @@ const storeWebhookData = async (req, res) => {
       message_type: message.type || "text",
       timestamp: parseInt(timestamp),
       profile_name: profile_name,
-      errors: errors.length > 0 ? errors : [],
+      webhook_errors: webhook_errors.length > 0 ? webhook_errors : [],
       raw_data: body,
       status: "received",
     });
