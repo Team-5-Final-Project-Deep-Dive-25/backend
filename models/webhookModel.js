@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const webhookSchema = mongoose.Schema(
+const webhookSchema = new mongoose.Schema(
   {
     wa_id: {
       type: String,
