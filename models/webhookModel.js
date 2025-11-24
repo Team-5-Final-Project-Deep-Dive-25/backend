@@ -28,7 +28,7 @@ const webhookSchema = new mongoose.Schema(
     },
     message_type: {
       type: String,
-      enum: ["text", "image", "document", "audio", "video", "other"],
+      enum: ["text", "image", "document", "audio", "video", "other", "button"],
       default: "text",
     },
     timestamp: {
