@@ -4,12 +4,10 @@ const webhookSchema = new mongoose.Schema(
   {
     wa_id: {
       type: String,
-      required: true,
       trim: true,
     },
     phone_number_id: {
       type: String,
-      required: true,
       trim: true,
     },
     number: {
@@ -35,7 +33,6 @@ const webhookSchema = new mongoose.Schema(
     },
     timestamp: {
       type: Number,
-      required: true,
     },
     profile_name: {
       type: String,

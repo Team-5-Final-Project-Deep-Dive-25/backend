@@ -5,8 +5,11 @@ const storeWebhookData = async (req, res) => {
   try {
     const body = req.body;
 
+    console.log("=== WEBHOOK RECEIVED ===");
+    console.log("Body object exists:", !!body?.object);
+
     if (!body?.object) {
-      console.log("Invalid webhook payload - no object");
+      console.log("❌ Invalid webhook payload - no object");
       return res.status(400).json({
         success: false,
         message: "Invalid webhook payload",
@@ -14,12 +17,19 @@ const storeWebhookData = async (req, res) => {
     }
 
     const entry = body.entry?.[0];
+    console.log("Entry exists:", !!entry);
+
     const changes = entry?.changes?.[0];
+    console.log("Changes exists:", !!changes);
+
     const value = changes?.value;
+    console.log("Value exists:", !!value);
+
     const message = value?.messages?.[0];
+    console.log("Message exists:", !!message);
 
     if (!message) {
-      console.log("No message found in webhook");
+      console.log("❌ No message found in webhook");
       return res.status(400).json({
         success: false,
         message: "No message found in webhook",
@@ -39,7 +49,7 @@ const storeWebhookData = async (req, res) => {
     // Check for errors in the webhook
     const errors = value?.errors || [];
 
-    console.log("Extracting webhook data:", {
+    console.log("✅ Extracted webhook data:", {
       wa_id: from,
       phone_number_id: phoneNumberId,
       message_id: msg_id,
@@ -51,7 +61,7 @@ const storeWebhookData = async (req, res) => {
     // Create webhook document
     const webhookData = new Webhook({
       wa_id: from,
-      phone_number_id: phoneNumberId,
+      phone_number_id: phoneNumberId || "",
       number: from,
       conversation_id: value?.conversation_id || null,
       message_id: msg_id,
@@ -64,23 +74,27 @@ const storeWebhookData = async (req, res) => {
       status: "received",
     });
 
+    console.log("Saving webhook data to database...");
     const savedData = await webhookData.save();
 
-    console.log("Webhook data stored successfully:", savedData._id);
+    console.log("✅ Webhook data stored successfully with ID:", savedData._id);
     return res.status(200).json({
       success: true,
       message: "Webhook data stored successfully",
       data: savedData,
     });
   } catch (error) {
-    console.error("Error storing webhook data:", error);
+    console.error("❌ Error storing webhook data:", error);
     console.error("Error message:", error.message);
     console.error("Error stack:", error.stack);
-    return res.status(500).json({
-      success: false,
-      message: "Error storing webhook data",
-      error: error.message,
-    });
+
+    if (!res.headersSent) {
+      return res.status(500).json({
+        success: false,
+        message: "Error storing webhook data",
+        error: error.message,
+      });
+    }
   }
 };
 
