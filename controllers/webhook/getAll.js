@@ -6,7 +6,7 @@ const storeWebhookData = async (req, res) => {
     const body = req.body;
 
     if (!body?.object) {
-j      console.log("Invalid webhook payload - no object");
+      console.log("Invalid webhook payload - no object");
       return res.status(400).json({
         success: false,
         message: "Invalid webhook payload",
