@@ -8,6 +8,19 @@ import asyncWrapper from "../middlewares/asyncWrapper.js";
 
 const router = express.Router();
 
+// Simple test endpoint for debugging
+router.get("/test", (req, res) => {
+  res.status(200).json({
+    message: "Flow router is working!",
+    timestamp: new Date().toISOString(),
+    environment: {
+      hasAppSecret: !!process.env.APP_SECRET,
+      hasPrivateKey: !!process.env.PRIVATE_KEY,
+      hasPassphrase: !!process.env.PASSPHRASE,
+    },
+  });
+});
+
 // Main flow endpoint - handles encrypted WhatsApp Flow requests
 router.post("/", asyncWrapper(handleFlowRequest));
 

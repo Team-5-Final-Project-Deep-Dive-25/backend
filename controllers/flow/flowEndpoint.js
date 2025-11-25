@@ -15,13 +15,34 @@ const { APP_SECRET, PRIVATE_KEY, PASSPHRASE = "" } = process.env;
 // Main flow endpoint handler
 export const handleFlowRequest = async (req, res) => {
   try {
+    console.log("Flow endpoint called with method:", req.method);
+    console.log("Request body:", req.body);
+    console.log("Headers:", req.headers);
+
+    // Handle health check requests (might come as POST with specific body)
+    if (
+      req.body &&
+      typeof req.body === "object" &&
+      req.body.action === "ping"
+    ) {
+      console.log("Health check ping received");
+      return res.status(200).json({
+        version: "3.0",
+        data: {
+          status: "active",
+        },
+      });
+    }
+
     if (!PRIVATE_KEY) {
+      console.error("Private key is missing from environment variables");
       throw new Error(
         'Private key is empty. Please check your env variable "PRIVATE_KEY".'
       );
     }
 
     if (!isRequestSignatureValid(req, APP_SECRET)) {
+      console.error("Request signature validation failed");
       // Return status code 432 if request signature does not match.
       // To learn more about return error codes visit: https://developers.facebook.com/docs/whatsapp/flows/reference/error-codes#endpoint_error_codes
       return res.status(432).send();
@@ -66,17 +87,35 @@ export const handleFlowRequest = async (req, res) => {
       encryptResponse(screenResponse, aesKeyBuffer, initialVectorBuffer)
     );
   } catch (error) {
-    console.error("Flow endpoint error:", error);
+    console.error("❌ Flow endpoint error:", error);
+    console.error("Error stack:", error.stack);
+    console.error("Request method:", req.method);
+    console.error("Request URL:", req.url);
+    console.error("Request body:", req.body);
+
     return res.status(500).json({
       success: false,
       message: "Internal server error",
       error: error.message,
+      timestamp: new Date().toISOString(),
     });
   }
 };
 
 // Health check endpoint
 export const getFlowStatus = (req, res) => {
-  res.send(`<pre>WhatsApp Flow Endpoint is Active!
-Checkout README.md to start.</pre>`);
+  console.log("GET health check called");
+
+  const status = {
+    status: "active",
+    timestamp: new Date().toISOString(),
+    version: "3.0",
+    environment: {
+      hasAppSecret: !!process.env.APP_SECRET,
+      hasPrivateKey: !!process.env.PRIVATE_KEY,
+      hasPassphrase: !!process.env.PASSPHRASE,
+    },
+  };
+
+  res.status(200).json(status);
 };
