@@ -31,7 +31,7 @@ export const getNextScreen = async (decryptedBody) => {
   if (action === "INIT") {
     return {
       version,
-      screen: "MY_SCREEN",
+      screen: "APPOINTMENT",
       data: {
         // custom data for the screen
         greeting: "Hey there! 👋",
@@ -42,7 +42,7 @@ export const getNextScreen = async (decryptedBody) => {
   if (action === "data_exchange") {
     // handle the request based on the current screen
     switch (screen) {
-      case "MY_SCREEN":
+      case "APPOINTMENT":
         // TODO: process flow input data
         console.info("Input name:", data?.name);
 
