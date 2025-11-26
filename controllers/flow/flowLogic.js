@@ -51,10 +51,151 @@ export const getNextScreen = async (decryptedBody) => {
           version,
           screen: "SUCCESS",
           data: {
-            extension_message_response: {
-              params: {
-                flow_token,
+            department: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  id: {
+                    type: "string",
+                  },
+                  title: {
+                    type: "string",
+                  },
+                },
               },
+              __example__: [
+                {
+                  id: "shopping",
+                  title: "Shopping & Groceries",
+                },
+                {
+                  id: "clothing",
+                  title: "Clothing & Apparel",
+                },
+                {
+                  id: "home",
+                  title: "Home Goods & Decor",
+                },
+                {
+                  id: "electronics",
+                  title: "Electronics & Appliances",
+                },
+                {
+                  id: "beauty",
+                  title: "Beauty & Personal Care",
+                },
+              ],
+            },
+            location: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  id: {
+                    type: "string",
+                  },
+                  title: {
+                    type: "string",
+                  },
+                },
+              },
+              __example__: [
+                {
+                  id: "1",
+                  title: "King’s Cross, London",
+                },
+                {
+                  id: "2",
+                  title: "Oxford Street, London",
+                },
+                {
+                  id: "3",
+                  title: "Covent Garden, London",
+                },
+                {
+                  id: "4",
+                  title: "Piccadilly Circus, London",
+                },
+              ],
+            },
+            is_location_enabled: {
+              type: "boolean",
+              __example__: true,
+            },
+            date: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  id: {
+                    type: "string",
+                  },
+                  title: {
+                    type: "string",
+                  },
+                },
+              },
+              __example__: [
+                {
+                  id: "2024-01-01",
+                  title: "Mon Jan 01 2024",
+                },
+                {
+                  id: "2024-01-02",
+                  title: "Tue Jan 02 2024",
+                },
+                {
+                  id: "2024-01-03",
+                  title: "Wed Jan 03 2024",
+                },
+              ],
+            },
+            is_date_enabled: {
+              type: "boolean",
+              __example__: true,
+            },
+            time: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  id: {
+                    type: "string",
+                  },
+                  title: {
+                    type: "string",
+                  },
+                },
+              },
+              __example__: [
+                {
+                  id: "10:30",
+                  title: "10:30",
+                },
+                {
+                  id: "11:00",
+                  title: "11:00",
+                  enabled: false,
+                },
+                {
+                  id: "11:30",
+                  title: "11:30",
+                },
+                {
+                  id: "12:00",
+                  title: "12:00",
+                  enabled: false,
+                },
+                {
+                  id: "12:30",
+                  title: "12:30",
+                },
+              ],
+            },
+            is_time_enabled: {
+              type: "boolean",
+              __example__: true,
             },
           },
         };
