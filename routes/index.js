@@ -10,6 +10,7 @@ import wishlistRouter from "./wishlistRouter.js";
 import contactRouter from "./contactRouter.js";
 import webhookRoute from "./webhookRoute.js";
 import flowRouter from "./flowRouter.js";
+import hemtRouter from "./HEMT/index.js";
 
 const router = express.Router();
 
@@ -26,5 +27,8 @@ router.use("/contact", contactRouter);
 
 router.use("/webhook", webhookRoute);
 router.use("/flow", flowRouter);
+
+// HEMT Admin Dashboard Routes
+router.use("/hemt", hemtRouter);
 
 export default router;

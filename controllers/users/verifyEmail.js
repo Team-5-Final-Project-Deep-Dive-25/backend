@@ -15,13 +15,13 @@ export const verifyEmail = async (req, res) => {
 
   const user = await User.findOne({ verificationToken: token });
 
-  if (!user) {
-    return res.status(400).json({
-      status: 400,
-      success: FAIL,
-      message: "Invalid or expired verification token",
-    });
-  }
+  // if (!user) {
+  //   return res.status(400).json({
+  //     status: 400,
+  //     success: FAIL,
+  //     message: "Invalid or expired verification token",
+  //   });
+  // }
 
   user.isVerified = true;
   user.verificationToken = undefined; //expired

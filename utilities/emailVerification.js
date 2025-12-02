@@ -13,8 +13,8 @@ export const sendVerificationEmail = async (toEmail, token) => {
   try {
     return await client.sendTransacEmail({
       sender: {
-        email: "mennaelgharabawii@gmail.com",
-        name: 'Menna from "exclusive ✨"',
+        email: "khaild22k12m71f@gmail.com",
+        name: 'Lelouch VI Britannia"',
       },
       to: [{ email: toEmail }],
       subject: "Verify your email",
@@ -29,8 +29,8 @@ export const sendVerificationEmail = async (toEmail, token) => {
 export const sendNotificationEmail = async (toEmail, message) => {
   await client.sendTransacEmail({
     sender: {
-      email: "mennaelgharabawii@gmail.com",
-      name: 'Menna from "exclusive ✨"',
+      email: "khaild22k12m71f@gmail.com",
+      name: 'Lelouch VI Britannia"',
     },
     to: [{ toEmail }],
     subject: "Profile Update Notification",
